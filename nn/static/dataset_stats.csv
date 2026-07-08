@@ -1,0 +1,67 @@
+class,image_count,avg_width,avg_height,min_width,min_height,max_width,max_height,formats,corrupt_files
+abyssinian,200,148,117,88,46,162,140,"jpeg, png",0
+cyprus,200,159,100,93,40,162,140,"jpeg, png",0
+lykoi,200,142,122,68,55,162,140,"jpeg, png",0
+donskoy,200,141,123,67,54,162,140,jpeg,0
+chausie,200,143,119,78,46,162,140,"jpeg, png",0
+european_shorthair,200,149,118,70,49,162,140,"jpeg, png",0
+turkish_van,200,149,120,87,56,162,140,"jpeg, png",0
+pixie_bob,200,147,119,78,49,162,140,"jpeg, png",0
+ragdoll,199,149,116,78,50,162,140,jpeg,0
+german_rex,199,138,125,72,50,162,140,"jpeg, png",0
+american_shorthair,199,147,114,65,50,162,140,"jpeg, png",0
+sokoke,199,145,122,70,49,162,140,"jpeg, png",0
+khao_manee,198,144,120,78,49,162,140,"jpeg, png",0
+thai,198,143,118,68,60,162,140,"jpeg, png",0
+cymric,198,148,120,63,43,162,140,"jpeg, png",0
+oriental_shorthair,197,141,123,78,54,162,140,jpeg,0
+cornish_rex,197,147,117,75,56,162,140,"jpeg, png",0
+burmese,197,147,117,45,58,162,140,"jpeg, png",0
+savannah,197,153,106,78,40,162,140,"jpeg, png",0
+american_wirehair,196,149,117,76,50,162,140,"jpeg, png",0
+peterbald,196,144,123,77,50,162,140,"jpeg, png",0
+karelian_bobtail,196,145,125,67,65,162,140,"jpeg, png",0
+tonkinese,195,148,116,70,53,162,140,"jpeg, png",0
+balinese,195,154,112,79,54,162,140,jpeg,0
+japanese_bobtail,194,149,118,87,49,162,140,"jpeg, png",0
+nebelung,194,143,119,64,46,162,140,jpeg,0
+selkirk_rex,192,144,122,78,76,162,140,jpeg,0
+persian,192,150,114,78,46,162,140,jpeg,0
+manx,192,155,113,86,50,162,140,"jpeg, png",0
+himalayan,192,158,109,93,40,162,140,jpeg,0
+munchkin,191,147,117,61,48,162,140,jpeg,0
+bengal,189,151,115,78,71,162,140,jpeg,0
+turkish_angora,188,145,119,66,52,162,140,jpeg,0
+vankedisi,187,147,116,63,47,162,140,"jpeg, png",0
+scottish_fold,184,143,120,78,50,162,140,jpeg,0
+egyptian_mau,184,144,121,72,74,162,140,"jpeg, png",0
+ocicat,182,150,115,62,44,162,140,"jpeg, png",0
+ragamuffin,182,149,116,78,44,162,140,"jpeg, png",0
+serengeti,175,159,100,78,53,300,140,"jpeg, png",0
+british_shorthair,174,148,117,78,50,162,140,jpeg,0
+toyger,160,145,120,78,50,162,140,"jpeg, png",0
+siberian,159,153,116,78,55,162,140,jpeg,0
+havana_brown,159,133,127,75,34,300,140,"jpeg, png",0
+exotic_shorthair,157,148,118,93,55,300,140,"jpeg, png",0
+bombay,154,139,123,46,50,162,140,"jpeg, png",0
+korat,152,147,117,93,50,162,140,"jpeg, png",0
+safari,150,158,105,79,38,300,140,"jpeg, png",0
+american_bobtail,140,155,114,64,48,162,140,jpeg,0
+mekong_bobtail,140,149,118,44,50,162,140,"jpeg, png",0
+korean_bobtail,139,140,129,63,81,162,140,jpeg,0
+siamese,139,152,115,78,53,300,140,"jpeg, png",0
+somali,139,150,112,61,53,162,140,jpeg,0
+devon_rex,138,150,116,78,55,162,140,jpeg,0
+american_curl,138,155,112,91,51,300,140,"jpeg, png",0
+ural_rex,137,144,121,48,65,162,140,"jpeg, png",0
+singapura,136,158,109,93,54,300,140,"jpeg, png",0
+ukrainian_levkoy,134,140,123,78,59,162,140,jpeg,0
+maine_coon,133,141,122,66,79,162,140,jpeg,0
+birman,131,155,113,93,56,162,140,jpeg,0
+oregon_rex,121,147,123,85,66,300,140,"jpeg, png",0
+kurilian_bobtail,120,149,121,78,81,162,140,jpeg,0
+laperm,120,149,116,78,55,162,140,"jpeg, png",0
+sphynx,120,149,117,47,63,162,140,jpeg,0
+chartreux,114,146,117,75,61,162,140,jpeg,0
+russian_blue,109,152,111,88,36,162,140,jpeg,0
+norwegian_forest_cat,97,150,114,78,56,162,140,jpeg,0
