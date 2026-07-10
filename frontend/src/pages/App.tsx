@@ -1,8 +1,13 @@
-import './App.css'
+
+
 import logo from "./assets/images/logo-universal.png"
-import {Greet} from "../wailsjs/go/main/App";
-import {useState} from "preact/hooks";
-import {h} from 'preact';
+import {Greet} from "../../wailsjs/go/main/App"
+import {useState} from "preact/hooks"
+import {Navbar} from "../components/Navbar"
+import {Main} from "../components/Main"
+import {Footer} from "../components/Footer"
+import '../styles/base.sass'
+
 
 export function App(props: any) {
     const [resultText, setResultText] = useState("Please enter your name below 👇");
@@ -19,13 +24,9 @@ export function App(props: any) {
 
     return (
         <div id="App">
-            <img src={logo} id="logo" alt="logo"/>
-            <div id="result" className="result">{resultText}</div>
-            <div id="input" className="input-box">
-                <input id="name" className="input" onChange={updateName} autoComplete="off" name="input"
-                        type="text"/>
-                <button className="btn" onClick={greet}>Greet</button>
-            </div>
+            <Navbar />
+            <Main />
+            <Footer />
         </div>
     )
 }

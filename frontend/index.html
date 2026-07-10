@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>dissertation</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                colors: {
+                    primary: '#3B82F6',
+                    secondary: '#60A5FA',
+                    cta: '#F97316',
+                    background: '#F8FAFC',
+                    text: '#1E293B',
+                    border: '#E2E8F0',
+                },
+                fontFamily: {
+                    heading: ['Fredoka', 'sans-serif'],
+                    body: ['Nunito', 'sans-serif'],
+                },
+                },
+            },
+        }
+  </script>
 </head>
 <body>
 <div id="app"></div>
