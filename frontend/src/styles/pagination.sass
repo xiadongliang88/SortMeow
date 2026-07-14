@@ -1,29 +1,30 @@
 .div-pagination
     display: flex
-    flex-direction: row
     justify-content: flex-end
     width: 100%
-    height: 30px
-    
+    height: 1.875rem
+    user-select: none
 
     .div-pagination-core
         display: flex
-        flex-direction: row
+        align-items: center
         width: auto
-        height: 30px
+        height: 1.875rem
+
         img
-            width: 10px
-            height: 10px
+            width: 0.625rem
+            height: 0.625rem
 
         span
-            height: 30px
-            line-height: 30px
-            font-size: 14px
+            height: 1.875rem
+            line-height: 1.875rem
+            font-size: 0.875rem
             color: #333333
 
         .pagination-icon
             height: 100%
-            margin-left: 10px
+            margin-left: 0.625rem
+            font-size: 0.5rem
             cursor: pointer
             display: flex
             flex-direction: row
@@ -31,46 +32,45 @@
             align-items: center
 
         .pagination-icon:first-child
-            margin-right: 10px
+            margin-right: 0.625rem
 
         .pagination-num
             width: auto
-            min-width: 20px
-            height: 30px
+            min-width: 1.25rem
+            height: 1.875rem
             color: #202020
-            font-size: 12px
+            font-size: 0.8rem
             font-weight: 800
             text-align: center
-            border-radius: 6px
-            padding: 0 4px
+            border-radius: 0.375rem
+            padding: 0 0.25rem
             cursor: pointer
 
         .pagination-num-selected
-            color: #c53048
+            color: var(--primary)
             font-weight: 800
 
         .pagination-etc
-            width: 30px
-            height: 30px
+            width: 1.875rem
+            height: 1.875rem
             color: #333333
             font-weight: 800
             text-align: center
 
         .pagination-word
-            font-size: 12px
-            margin: 0 5px 0 5px
-            color: #202020
+            font-size: 0.75rem
+            font-weight: bold
+            margin: 0 0.3125rem 0 0.3125rem
+            color: #333333
 
         input
-            width: 20px
-            height: 20px
+            width: 1.25rem
+            height: 1.25rem
             color: #292929
-            // background-color: $transcript-bg
-            font-size: 12px
+            font-size: 0.75rem
             text-align: center
             border: 1px solid #DDDFE6
-            border-radius: 4px
-            margin-top: 2px
+            border-radius: 0.25rem
 
         input:focus
             outline: none

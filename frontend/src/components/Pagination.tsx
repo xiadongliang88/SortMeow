@@ -182,21 +182,9 @@ const Pagination = ({
     return (
         <div className="div-pagination">
             <div className="div-pagination-core unselect">
-                <span
-                    className="pagination-icon"
-                    onClick={() => handleChangeNum('pre')}
-                >
-                    {/* <img src="../static/images/page_left.svg" alt="" /> */}
-                    ◀
-                </span>
+                <span className="pagination-icon" onClick={() => handleChangeNum('pre')}>◀</span>
                 {seqNums.length < 10 ? calPaginationDom() : calPaginationDomEtc()}
-                <span
-                    className="pagination-icon"
-                    onClick={() => handleChangeNum('next')}
-                >
-                    {/* <img src="../static/images/page_right.svg" alt="" /> */}
-                    ▶
-                </span>
+                <span className="pagination-icon" onClick={() => handleChangeNum('next')}>▶</span>
                 <span className="pagination-word" style={{ marginLeft: 16 }}>
                     前往
                 </span>
