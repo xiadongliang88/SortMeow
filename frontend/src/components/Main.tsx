@@ -1,39 +1,38 @@
-export const Main = () => {
+const Main = () => {
     return (
-        <main class="h-[648px] pt-28 pb-16 px-4 md:px-6 lg:px-8">
-            <div class="max-w-6xl mx-auto">
-                {/* <div class="text-center mb-12 animate-slide-up">
-                    <h1 class="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-text mb-4">
-                        Discover Your Cat's <span class="text-primary">Breed</span>
+        <main class="app-main">
+            <div class="main-container">
+                <div class="title">
+                    <h1>
+                        发现<span>它</span>的<span>分类</span>
                     </h1>
-                    <p class="font-body text-lg md:text-xl text-text/70 max-w-2xl mx-auto">
-                        Upload a photo of your furry friend and let our AI identify their breed in seconds
+                    <p>
+                        上传一张猫咪照片，让AI不仅认出它<span>是什么</span>
                     </p>
-                </div> */}
-
-                {/* <div class="max-w-2xl mx-auto mb-12 animate-slide-up" style="animation-delay: 0.1s;">
+                    <i>基于深度残差网络</i>
+                </div>
+                <div class="upload">
                     <div
                         id="dropZone"
-                        class="drop-zone bg-white rounded-3xl border-2 border-dashed border-border p-12 text-center cursor-pointer"
+                        class="upload-zone"
                     >
-                    <div id="uploadContent">
-                        <svg class="w-16 h-16 mx-auto mb-4 text-secondary animate-pulse-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
-                        </svg>
-                        <p class="font-heading font-semibold text-xl text-text mb-2">Drop your cat's photo here</p>
-                        <p class="text-text/60 mb-4">or click to browse</p>
-                        <p class="text-sm text-text/50">Supports JPG, PNG up to 10MB</p>
-                    </div>
-                    <div id="previewContent" class="hidden">
-                        <img id="previewImage" class="max-h-64 mx-auto rounded-2xl mb-4 object-cover" alt="Cat preview" />
-                        <button id="removeBtn" class="text-red-500 hover:text-red-600 font-medium transition-colors duration-200 cursor-pointer">
-                            Remove photo
-                        </button>
-                    </div>
-                        <input type="file" id="fileInput" class="hidden" accept="image/*" />
+                        <div id="uploadContent">
+                            <svg class="w-16 h-16 mx-auto mb-4 text-secondary animate-pulse-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                            </svg>
+                            <p class="font-heading font-semibold text-xl text-text mb-2">点击或拖拽上传</p>
+                            <p class="text-sm text-text/50">支持JPG、PNG、JPEG，最大不超过2MB</p>
+                        </div>
+                        {/* <div id="previewContent" class="hidden">
+                            <img id="previewImage" class="max-h-64 mx-auto rounded-2xl mb-4 object-cover" alt="Cat preview" />
+                            <button id="removeBtn" class="text-red-500 hover:text-red-600 font-medium transition-colors duration-200 cursor-pointer">
+                                Remove photo
+                            </button>
+                        </div>
+                        <input type="file" id="fileInput" class="hidden" accept="image/*" /> */}
                     </div>
 
-                    <button
+                    {/* <button
                         id="detectBtn"
                         class="hidden w-full mt-4 bg-cta hover:bg-orange-600 text-white font-heading font-semibold text-lg py-4 rounded-2xl transition-colors duration-200 cursor-pointer flex items-center justify-center gap-3"
                     >
@@ -41,8 +40,8 @@ export const Main = () => {
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
                     </svg>
                     Detect Breed
-                    </button>
-                </div> */}
+                    </button> */}
+                </div>
 
                 {/* <div id="loadingState" class="hidden max-w-2xl mx-auto mb-12">
                     <div class="bg-white rounded-3xl border border-border p-8 text-center">
@@ -60,7 +59,7 @@ export const Main = () => {
                     <h2 class="font-heading font-bold text-2xl text-text">Detection Complete!</h2>
                     </div>
 
-                    <div id="primaryResult" class="bg-white rounded-3xl border border-border p-6 md:p-8 mb-6 animate-slide-up">
+                    <div id="primaryResult" class="bg-white rounded-3xl border border-border p-6 md:p-8 mb-6">
                     <div class="flex flex-col md:flex-row gap-6 md:gap-8">
                         <div class="flex-shrink-0">
                         <img id="resultImage" class="w-full md:w-48 h-48 rounded-2xl object-cover" alt="Cat photo" />
@@ -142,3 +141,5 @@ export const Main = () => {
         </main>
     )
 }
+
+export default Main

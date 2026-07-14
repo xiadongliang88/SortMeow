@@ -1,31 +1,28 @@
-
-
-import logo from "./assets/images/logo-universal.png"
-import {Greet} from "../../wailsjs/go/main/App"
-import {useState} from "preact/hooks"
-import {Navbar} from "../components/Navbar"
-import {Main} from "../components/Main"
-import {Footer} from "../components/Footer"
+import { Router, Route } from "preact-router"
+import { Navbar } from "../components/Navbar"
+import Main from "../components/Main"
+import History from "../components/History"
+import Dashboard from "../components/Dashboard"
+import TrainsetManagement from "../components/TrainsetManagement"
+import TestsetManagement from "../components/TestsetManagement"
+import { Footer } from "../components/Footer"
 import '../styles/base.sass'
+import '../styles/history.sass'
+import '../styles/pagination.sass'
+import '../styles/dashboard.sass'
 
 
 export function App(props: any) {
-    const [resultText, setResultText] = useState("Please enter your name below 👇");
-    const [name, setName] = useState('');
-    const updateName = (e: any) => setName(e.target.value);
-    const updateResultText = (result: string) => setResultText(result);
-
-    const greet = async() => {
-        const result = await (window as any).go.main.App.Greet("World")
-        console.log('result', result)
-
-        Greet(name).then(updateResultText);
-    }
-
     return (
         <div id="App">
             <Navbar />
-            <Main />
+            <Router>
+                <Route path="/" component={Main} />
+                <Route path="/dashboard" component={Dashboard} />
+                <Route path="/history" component={History} />
+                <Route path="/dashboard/datasets" component={TrainsetManagement} />
+                <Route path="/dashboard/testsets" component={TestsetManagement} />
+            </Router>
             <Footer />
         </div>
     )

@@ -1,0 +1,57 @@
+.app-history
+    display: flex
+    flex-direction: column
+    align-items: center
+    height: 651px
+    padding: 7rem 1rem 4rem 1rem
+
+    .history-card
+        display: flex
+        justify-content: space-between
+        width: calc(100% - 20rem)
+        height: 5rem
+        padding: 1rem
+        margin-bottom: 0.6rem
+        background-color: #FFFFFF
+        backdrop-filter: blur(8px)
+        border-radius: 0.6rem
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)
+        border: 1px solid var(--border)
+
+        .card-left
+            width: 3rem
+            height: 3rem
+            background-color: #333333
+
+        .card-right
+            display: flex
+            flex-direction: column
+            width: calc(100% - 5rem)
+            height: 5rem
+
+            .right-top
+                display: flex
+                align-items: center
+                justify-content: space-between
+
+                > h3
+                    color: #333333
+                    font-size: 1rem
+                    font-weight: bold
+
+                > span
+                    color: #cccccc
+                    font-size: 0.8rem
+
+            .right-overview
+                width: 100%
+                margin-top: 0.25rem
+                color: #cccccc
+                font-size: 0.9rem
+                text-align: left
+
+    .history-pagination
+        width: calc(100% - 20rem)
+        margin-top: 1rem
+
+
