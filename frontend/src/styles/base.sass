@@ -19,6 +19,9 @@ body
 
 :root
   --primary: #3B82F6
+  --title: #1e293b
+  --text:#5f6874
+  --textsub: #878d95
 
 #app
     height: 100vh
@@ -96,21 +99,21 @@ body
             display: flex
             flex-direction: column
             text-align: center
-            margin-bottom: 2rem
+            margin-bottom: 1.25rem
 
             > h1
                 font-family: "ZcoolHappy"
                 font-weight: 700
                 font-size: 2.75rem
-                margin-bottom: 0.75rem
-                color: #323232
+                margin-bottom: 0.5rem
+                color: var(--title)
 
                 > span
                     color: var(--primary)
 
             > p
                 text-align: center
-                color: #5D5D5D
+                color: var(--text)
                 font-size: 1.0625rem
                 margin-bottom: 1rem
                 max-width: 42rem
@@ -130,17 +133,232 @@ body
                 border-radius: 0.2rem
 
         .upload
-            width: 36rem
+            width: 32rem
             margin: 0 auto 3rem auto
 
             .upload-zone
+                display: flex
+                flex-direction: column
+                align-items: center
+                justify-content: center
+                height: 17rem
                 background-color: white
                 border-radius: 1.5rem
                 border-width: 2px
-                border: 2px dashed #c6c6c6
-                padding: 3rem
+                border-style: dashed
+                border-color: #e2e8f0
+                border-style: dashed
                 text-align: center
                 cursor: pointer
+
+                #uploadContent 
+                    > svg
+                        width: 4rem
+                        height: 4rem
+                        margin: 0 auto
+                        margin-bottom: 1rem
+                        color: var(--primary)
+
+                    > p
+                        &:nth-child(2)
+                            font-weight: 600
+                            color: var(--title) 
+                            font-size: 1.25rem
+                            margin-bottom: 0.5rem
+
+                        &:nth-child(3)
+                            font-size: 0.875rem
+                            color: var(--textsub)
+
+                #previewContent
+                    margin-top: 0.5rem
+
+                    > img
+                        max-height: 10.5rem
+                        margin-left: auto
+                        margin-right: auto
+                        margin-bottom: 0.25rem
+                        border-radius: 1rem
+                        object-fit: cover
+
+                    > button
+                        padding: 0.5rem 1.1rem
+                        color: #FD6089
+                        font-size: 0.925rem
+                        font-weight: normal
+                        text-decoration-line: underline
+                        cursor: pointer
+
+                    &:hover
+                        color: #DC2626
+
+                .zone-loading
+                    padding: 2rem
+                    text-align: center
+                    background-color: #FFFFFF
+                    border-radius: 1.5rem
+
+                    .loading-spinner
+                        width: 4rem
+                        height: 4rem
+                        margin: 0 auto 1rem auto
+                        border-width: 4px
+                        border-color: var(--primary)
+                        border-top-color: transparent
+                        border-radius: 4rem
+                        animation: spin 1s linear infinite
+
+                    @keyframes spin
+                        to
+                            transform: rotate(360deg)
+
+                    > p
+                        &:nth-child(2)
+                            font-weight: 600
+                            font-size: 1.25rem
+                            color: var(--title)
+                            margin-bottom: 0.5rem
+
+                        &:nth-child(3)
+                            font-size: 1rem
+                            color: var(--textsub)
+
+            >button#detectBtn
+                width: 12rem
+                height: 3.5rem
+                margin: 1rem auto 0 auto
+                background-color: var(--primary)
+                color: white
+                font-weight: 600
+                font-size: 1.125rem
+                border-radius: 0.75rem
+                transition: background-color 200ms, color 200ms
+                cursor: pointer
+                display: flex
+                align-items: center
+                justify-content: center
+                gap: 0.5rem
+
+                > svg
+                    width: 1.5rem
+                    height: 1.5rem
+
+        .result
+            width: 35rem
+            margin: 0 auto
+
+            .result-complete
+                display: flex
+                align-items: center
+                justify-content: center
+                gap: 0.75rem
+                margin-bottom: 1.5rem
+
+                > svg
+                    width: 1.5rem
+                    height: 1.5rem
+                    color: var(--primary)
+
+                > h2
+                    font-family: "ZcoolHappy"
+                    font-weight: 700
+                    font-size: 1.5rem
+                    color: var(--title)
+
+            .result-main
+                display: flex
+                min-height: 10rem
+                padding: 1rem 1rem
+                margin-bottom: 1.5rem
+                background-color: #ffffff
+                border-radius: 1rem
+                border: 1px solid var(--color-border)
+                gap: 2rem
+
+                > img
+                    width: 8rem
+                    height: 8rem
+                    background-color: #333
+                    border-radius: 0.5rem
+
+                .result-word
+                    display: flex
+                    flex-direction: column
+                    justify-content: flex-start
+                    align-items: flex-start
+                    width: calc(100% - 10rem)
+
+                    > div
+                        display: flex
+                        justify-content: space-between
+                        align-items: center
+                        width: 100%
+                        padding-bottom: 1rem
+                        margin-bottom: 1rem
+                        border-bottom: 1px solid #c6c6c6
+
+                        > h3
+                            display: flex
+                            width: 40%
+                            color: #333
+                            font-size: 1.25rem
+                            text-align: left
+                            font-weight: bold
+
+                        > div
+                            display: flex
+                            justify-content: flex-end
+                            align-items: center
+                            width: 60%
+                            gap: 0.5rem
+
+                            .probability-bar
+                                display: flex
+                                width: 50%
+                                height: 0.5rem
+                                background-color: #e2e8f0
+                                border-radius: 0.125rem
+
+                                > div
+                                    width: 80%
+                                    height: 100%
+                                    background-color: #5ea3f9
+                                    border-radius: 0.125rem
+
+                            > span
+                                display: flex
+                                color: #5ea3f9
+                                font-size: 1rem
+                                font-weight: bold
+
+                                > span
+                                    color: var(--title)
+                                    // font-size: 0.725rem
+
+                    > h4
+                        color: var(--title)
+                        text-align: left
+                        font-size: 1rem
+                        font-weight: bold
+                        margin-bottom: 0.5rem
+
+                    > p
+                        color: var(--text)
+                        text-align: left
+                        font-size: 0.875rem
+
+            > button
+                width: 9rem
+                height: 3rem
+                background-color: var(--primary)
+                color: white
+                font-weight: 600
+                font-size: 1.125rem
+                border-radius: 0.5rem
+                transition: background-color 200ms, color 200ms
+                cursor: pointer
+
+
 
 .app-footer
     display: flex

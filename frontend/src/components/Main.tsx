@@ -1,4 +1,71 @@
+import { useState, useEffect, useRef } from 'preact/hooks'
+
+
 const Main = () => {
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const [fileName, setFileName] = useState<string>('')
+    const [fileSrc, setFileSrc] = useState<string>('')
+
+    const [step, setStep] = useState(0)
+
+    const handleUploadClick = () => {
+        fileInputRef.current?.click()
+    }
+
+    const handleFileChange = (e: Event) => {
+        const target = e.target as HTMLInputElement
+        const file = target.files?.[0]
+        if (file) {
+            const reader = new FileReader()
+            reader.onload = async function() {
+                const arrayBuffer = reader.result as ArrayBuffer
+                const uint8Array = new Uint8Array(arrayBuffer)
+
+                const result = await (window as any).go.main.App.UploadImage(
+                    Array.from(uint8Array),
+                    file.name
+                )
+
+                if (result.code === 0) {
+                    setFileName(result.data)
+
+                    const imgResult = await (window as any).go.main.App.GetImage(result.data)
+                    if (imgResult.code === 0) {
+                        setFileSrc(imgResult.data)
+                        setStep(1)
+                    }
+                }
+            }
+            reader.readAsArrayBuffer(file)
+        }
+    }
+
+    const resetUpload = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ''
+        }
+        setFileSrc('')
+    }
+
+    const handleRemovePhoto = (e: Event) => {
+        e.stopPropagation()
+        setStep(0)
+        resetUpload()
+    }
+
+    const handleDetect = () => {
+        setStep(2)
+
+        setTimeout(() => {
+            setStep(3)
+        }, 1000)
+    }
+
+    const handleTryOther = () => {
+        setStep(0)
+        resetUpload()
+    }
+
     return (
         <main class="app-main">
             <div class="main-container">
@@ -11,100 +78,92 @@ const Main = () => {
                     </p>
                     <i>基于深度残差网络</i>
                 </div>
-                <div class="upload">
-                    <div
-                        id="dropZone"
-                        class="upload-zone"
+                <div class={`upload${!(step == 0 || step == 1 || step == 2) ? ' hidden' : ''}`}>
+                    <div 
+                        class="upload-zone" 
+                        style={{borderStyle: step != 2 ? 'dashed' : 'solid'}} 
+                        onClick={handleUploadClick}
                     >
-                        <div id="uploadContent">
-                            <svg class="w-16 h-16 mx-auto mb-4 text-secondary animate-pulse-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                        {fileSrc.length > 0 && step == 1 ?
+                            <div id="previewContent">
+                                <img src={fileSrc} id="previewImage" />
+                                <button onClick={handleRemovePhoto}>
+                                    ❌ 移除照片
+                                </button>
+                            </div> : null
+                        }
+                        {fileSrc.length == 0 && step == 0 ?
+                            <>
+                                <div id="uploadContent">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path 
+                                            stroke-linecap="round" 
+                                            stroke-linejoin="round" 
+                                            d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                                        />
+                                    </svg>
+                                    <p>点击或拖拽上传</p>
+                                    <p>支持JPG、PNG、JPEG，最大不超过2MB</p>
+                                </div>
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    class="hidden"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                />
+                            </> : null
+                        }
+                        {fileSrc.length > 0 && step == 2 ?
+                            <>
+                                <div class="zone-loading">
+                                    <div class="loading-spinner" />
+                                    <p>正在检测...</p>
+                                    <p>请耐心等待~</p>
+                                </div>
+                            </> : null
+                        }
+                    </div>
+                    {fileSrc.length > 0 && step == 1 ?
+                        <button id="detectBtn" onClick={handleDetect}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path 
+                                    stroke-linecap="round" 
+                                    stroke-linejoin="round" 
+                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                                />
                             </svg>
-                            <p class="font-heading font-semibold text-xl text-text mb-2">点击或拖拽上传</p>
-                            <p class="text-sm text-text/50">支持JPG、PNG、JPEG，最大不超过2MB</p>
-                        </div>
-                        {/* <div id="previewContent" class="hidden">
-                            <img id="previewImage" class="max-h-64 mx-auto rounded-2xl mb-4 object-cover" alt="Cat preview" />
-                            <button id="removeBtn" class="text-red-500 hover:text-red-600 font-medium transition-colors duration-200 cursor-pointer">
-                                Remove photo
-                            </button>
-                        </div>
-                        <input type="file" id="fileInput" class="hidden" accept="image/*" /> */}
-                    </div>
-
-                    {/* <button
-                        id="detectBtn"
-                        class="hidden w-full mt-4 bg-cta hover:bg-orange-600 text-white font-heading font-semibold text-lg py-4 rounded-2xl transition-colors duration-200 cursor-pointer flex items-center justify-center gap-3"
-                    >
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
-                    </svg>
-                    Detect Breed
-                    </button> */}
+                            开始检测
+                        </button> : null
+                    }
                 </div>
-
-                {/* <div id="loadingState" class="hidden max-w-2xl mx-auto mb-12">
-                    <div class="bg-white rounded-3xl border border-border p-8 text-center">
-                    <div class="w-16 h-16 mx-auto mb-4 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-                    <p class="font-heading font-semibold text-lg text-text mb-2">Analyzing your cat...</p>
-                    <p class="text-text/60">Our AI is identifying the breed</p>
+                <div class={`result${step != 3 ? ' hidden' : ''}`}>
+                    <div class="result-complete">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                        </svg>
+                        <h2>检测完成！</h2>
                     </div>
-                </div> */}
-
-                {/* <div id="resultsSection" class="hidden">
-                    <div class="flex items-center justify-center gap-3 mb-6">
-                    <svg class="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
-                    <h2 class="font-heading font-bold text-2xl text-text">Detection Complete!</h2>
-                    </div>
-
-                    <div id="primaryResult" class="bg-white rounded-3xl border border-border p-6 md:p-8 mb-6">
-                    <div class="flex flex-col md:flex-row gap-6 md:gap-8">
-                        <div class="flex-shrink-0">
-                        <img id="resultImage" class="w-full md:w-48 h-48 rounded-2xl object-cover" alt="Cat photo" />
-                        </div>
-                        <div class="flex-grow">
-                        <div class="flex items-start justify-between mb-4">
+                    <div class="result-main">
+                        <img />
+                        <div class="result-word">
                             <div>
-                            <h3 id="breedName" class="font-heading font-bold text-2xl md:text-3xl text-text mb-1"></h3>
-                            <p id="scientificName" class="text-text/60 font-medium"></p>
+                                <h3>异国短毛猫</h3>
+                                <div>
+                                    <div class="probability-bar">
+                                        <div />
+                                    </div>
+                                    <span>可信度 78%</span>
+                                </div>
                             </div>
-                            <div class="bg-primary/10 px-4 py-2 rounded-xl">
-                            <p class="font-heading font-bold text-xl text-primary"><span id="confidence">0</span>%</p>
-                            <p class="text-xs text-text/60">confidence</p>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <div class="h-3 bg-border rounded-full overflow-hidden">
-                            <div id="confidenceBar" class="confidence-bar h-full bg-gradient-to-r from-primary to-secondary rounded-full" style="width: 0%"></div>
-                            </div>
-                        </div>
-
-                        <p id="breedDescription" class="text-text/80 leading-relaxed mb-4"></p>
-
-                        <div id="breedTraits" class="flex flex-wrap gap-2">
-                        </div>
+                            <h4>关于英短</h4>
+                            <p>尽量快点附近的路口附近的联发科九点零分肌肤的路口附近登陆反对浪费空间 尽量快点附近的路口附近的联发科九点零分肌肤的路口附近登陆反对浪费空间</p>
                         </div>
                     </div>
-                    </div>
-
-                    <div class="mb-6">
-                    <h4 class="font-heading font-semibold text-lg text-text mb-4">Other possibilities</h4>
-                    <div id="otherResults" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    </div>
-                    </div>
-
-                    <div class="text-center">
-                    <button
-                        id="tryAgainBtn"
-                        class="bg-primary hover:bg-blue-600 text-white font-heading font-semibold px-8 py-3 rounded-2xl transition-colors duration-200 cursor-pointer"
-                    >
-                        Try Another Photo
+                    <button onClick={handleTryOther}>
+                        再试一张
                     </button>
-                    </div>
-                </div> */}
+                </div>
 
                 {/* <div id="featuresSection" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
                     <div class="bg-white rounded-2xl border border-border p-6 text-center cursor-pointer hover:shadow-lg transition-shadow duration-200">

@@ -21,6 +21,8 @@ env/
 .idea/
 .claude/
 
+uploads/*
+
 nn/dataset/toy/*
 nn/dataset/benchmark/*
 nn/models/*.pth
