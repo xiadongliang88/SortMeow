@@ -45,14 +45,17 @@ const Pagination = ({
 
     const handleEnterPress = (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
-            if (parseInt(value) <= seqNums.length && parseInt(value) > 0) {
-                handleChangeNum(parseInt(value))
-            } else if (parseInt(value) >= seqNums.length) {
+            const target = e.target as HTMLInputElement
+            const page = parseInt(target.value)
+            if (page >= 1 && page <= seqNums.length) {
+                handleChangeNum(page)
+                onChange(page)
+            } else if (page > seqNums.length) {
                 handleChangeNum(seqNums.length)
-            } else if (parseInt(value) < seqNums.length) {
-                handleChangeNum(1)
+                onChange(seqNums.length)
             } else {
                 handleChangeNum(1)
+                onChange(1)
             }
         }
     }

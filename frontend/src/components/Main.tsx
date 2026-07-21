@@ -1,16 +1,22 @@
-import { useState, useEffect, useRef } from 'preact/hooks'
+import { useState, useRef } from 'preact/hooks'
+import { message } from '../utils/toast'
 
+interface IDetectResult {
+    id: number
+    code: string
+    name: number
+    brief: string
+    confidence_level: number
+}
 
 const Main = () => {
     const fileInputRef = useRef<HTMLInputElement>(null)
     const [fileName, setFileName] = useState<string>('')
     const [fileSrc, setFileSrc] = useState<string>('')
+    const [step, setStep] = useState<number>(0)
+    const [detectResult, setDetectResult] = useState<IDetectResult | null>(null)
 
-    const [step, setStep] = useState(0)
-
-    const handleUploadClick = () => {
-        fileInputRef.current?.click()
-    }
+    const handleUploadClick = () => fileInputRef.current?.click()
 
     const handleFileChange = (e: Event) => {
         const target = e.target as HTMLInputElement
@@ -56,13 +62,20 @@ const Main = () => {
     const handleDetect = () => {
         setStep(2)
 
-        setTimeout(() => {
-            setStep(3)
+        setTimeout(async() => {
+            const result = await (window as any).go.main.App.Detect(fileName)
+            if (result.code === 0) {
+                setDetectResult(result.data)
+                setStep(3)
+            } else if (result.code === 1) {
+                message.error(result.message)
+            }
         }, 1000)
     }
 
     const handleTryOther = () => {
         setStep(0)
+        setDetectResult(null)
         resetUpload()
     }
 
@@ -74,9 +87,14 @@ const Main = () => {
                         发现<span>它</span>的<span>分类</span>
                     </h1>
                     <p>
-                        上传一张猫咪照片，让AI不仅认出它<span>是什么</span>
+                        上传一张猫咪照片，让AI认出它<span>是什么</span>
                     </p>
-                    <i>基于深度残差网络</i>
+                    <i>
+                        <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                        <span>基于深度残差网络</span>
+                    </i>
                 </div>
                 <div class={`upload${!(step == 0 || step == 1 || step == 2) ? ' hidden' : ''}`}>
                     <div 
@@ -125,7 +143,7 @@ const Main = () => {
                         }
                     </div>
                     {fileSrc.length > 0 && step == 1 ?
-                        <button id="detectBtn" onClick={handleDetect}>
+                        <button onClick={handleDetect}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path 
                                     stroke-linecap="round" 
@@ -142,60 +160,30 @@ const Main = () => {
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                         </svg>
-                        <h2>检测完成！</h2>
+                        <h2>完成！</h2>
                     </div>
                     <div class="result-main">
                         <img />
                         <div class="result-word">
                             <div>
-                                <h3>异国短毛猫</h3>
+                                <h3>{detectResult?.name}</h3>
                                 <div>
                                     <div class="probability-bar">
                                         <div />
                                     </div>
-                                    <span>可信度 78%</span>
+                                    <span>置信度 {detectResult ? detectResult.confidence_level * 100 + '%' : ''}</span>
                                 </div>
                             </div>
-                            <h4>关于英短</h4>
-                            <p>尽量快点附近的路口附近的联发科九点零分肌肤的路口附近登陆反对浪费空间 尽量快点附近的路口附近的联发科九点零分肌肤的路口附近登陆反对浪费空间</p>
+                            <p>{detectResult?.brief}</p>
                         </div>
                     </div>
                     <button onClick={handleTryOther}>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                        </svg>
                         再试一张
                     </button>
                 </div>
-
-                {/* <div id="featuresSection" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-                    <div class="bg-white rounded-2xl border border-border p-6 text-center cursor-pointer hover:shadow-lg transition-shadow duration-200">
-                    <div class="w-14 h-14 mx-auto mb-4 bg-primary/10 rounded-2xl flex items-center justify-center">
-                        <svg class="w-7 h-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                        </svg>
-                    </div>
-                    <h3 class="font-heading font-semibold text-lg text-text mb-2">Lightning Fast</h3>
-                    <p class="text-text/60 text-sm">Get results in under 3 seconds with our optimized AI model</p>
-                    </div>
-
-                    <div class="bg-white rounded-2xl border border-border p-6 text-center cursor-pointer hover:shadow-lg transition-shadow duration-200">
-                    <div class="w-14 h-14 mx-auto mb-4 bg-cta/10 rounded-2xl flex items-center justify-center">
-                        <svg class="w-7 h-7 text-cta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
-                        </svg>
-                    </div>
-                    <h3 class="font-heading font-semibold text-lg text-text mb-2">98% Accuracy</h3>
-                    <p class="text-text/60 text-sm">Trained on 50,000+ cat images across 60+ breeds</p>
-                    </div>
-
-                    <div class="bg-white rounded-2xl border border-border p-6 text-center cursor-pointer hover:shadow-lg transition-shadow duration-200">
-                    <div class="w-14 h-14 mx-auto mb-4 bg-green-100 rounded-2xl flex items-center justify-center">
-                        <svg class="w-7 h-7 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
-                        </svg>
-                    </div>
-                    <h3 class="font-heading font-semibold text-lg text-text mb-2">Always Free</h3>
-                    <p class="text-text/60 text-sm">No hidden fees, no subscriptions. Detect away!</p>
-                    </div>
-                </div> */}
             </div>
         </main>
     )

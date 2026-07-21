@@ -3,7 +3,18 @@
     flex-direction: column
     align-items: center
     height: 651px
-    padding: 7rem 1rem 4rem 1rem
+    padding: 6.5rem 1rem 4rem 1rem
+
+    .history-clear
+        width: calc(100% - 20rem)
+        text-align: right
+        margin-bottom: 0.5rem
+
+        > a
+            font-size: 0.875rem
+            color: var(--primary)
+            cursor: pointer
+            // text-decoration: underline
 
     .history-card
         display: flex
@@ -33,15 +44,39 @@
                 display: flex
                 align-items: center
                 justify-content: space-between
+                gap: 1rem
 
                 > h3
+                    width: 6rem
                     color: #333333
                     font-size: 1rem
                     font-weight: bold
+                    text-align: left
 
-                > span
-                    color: #cccccc
-                    font-size: 0.8rem
+                .card-actions
+                    display: flex
+                    flex: 1
+                    justify-content: space-between
+                    align-items: flex-start
+                    gap: 0.75rem
+
+                    > span
+                        color: #cccccc
+                        font-size: 0.8rem
+
+                    > button
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        width: 1rem
+                        height: 1rem
+                        font-size: 1rem
+                        padding: 0
+                        background: none
+                        border: none
+                        border-radius: 0.35rem
+                        color: #9ca3af
+                        cursor: pointer
 
             .right-overview
                 width: 100%
@@ -49,9 +84,12 @@
                 color: #cccccc
                 font-size: 0.9rem
                 text-align: left
+                overflow: hidden
+                text-overflow: ellipsis
+                white-space: nowrap
 
     .history-pagination
         width: calc(100% - 20rem)
-        margin-top: 1rem
+        margin-top: 0.5rem
 
 
