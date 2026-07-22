@@ -3,18 +3,32 @@
     flex-direction: column
     align-items: center
     height: 651px
-    padding: 6.5rem 1rem 4rem 1rem
+    padding: 7.25rem 1rem 4rem 1rem
 
     .history-clear
-        width: calc(100% - 20rem)
-        text-align: right
+        display: flex
+        justify-content: flex-end
+        align-items: center
         margin-bottom: 0.5rem
+        position: absolute
+        top: 19rem
+        right: 1rem
+        z-index: 1000
 
-        > a
-            font-size: 0.875rem
-            color: var(--primary)
+        > button
+            display: flex
+            justify-content: center
+            align-items: center
+            padding: 0.75rem
+            background-color: white
+            backdrop-filter: blur(8px)
+            border-radius: 0.375rem
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)
+            border: 1px solid transparent
             cursor: pointer
-            // text-decoration: underline
+
+            > svg
+                cursor: pointer
 
     .history-card
         display: flex
@@ -30,9 +44,16 @@
         border: 1px solid var(--border)
 
         .card-left
+            display: flex
+            justify-content: center
+            align-items: center
             width: 3rem
             height: 3rem
             background-color: #333333
+
+            > img
+                max-width: 100%
+                max-height: 100%
 
         .card-right
             display: flex
@@ -74,7 +95,6 @@
                         padding: 0
                         background: none
                         border: none
-                        border-radius: 0.35rem
                         color: #9ca3af
                         cursor: pointer
 
@@ -90,6 +110,6 @@
 
     .history-pagination
         width: calc(100% - 20rem)
-        margin-top: 0.5rem
+        margin-top: 0.6rem
 
 

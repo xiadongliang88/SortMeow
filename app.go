@@ -12,6 +12,10 @@ import (
 	"gorm.io/gorm"
 )
 
+var (
+	publicImagePath = "./frontend/public/images"
+)
+
 func NewApp() *App {
 	return &App{}
 }
@@ -33,7 +37,7 @@ func (a *App) GormDB() (*gorm.DB, error) {
 }
 
 func (a *App) UploadImage(data []byte, filename string) Response {
-	uploadsDir := "./uploads"
+	uploadsDir := publicImagePath
 	err := os.MkdirAll(uploadsDir, 0755)
 	if err != nil {
 		return Response{Code: 1, Message: "failed", Data: err.Error()}
@@ -52,7 +56,7 @@ func (a *App) UploadImage(data []byte, filename string) Response {
 }
 
 func (a *App) GetImage(filename string) Response {
-	filePath := filepath.Join("./uploads", filename)
+	filePath := filepath.Join(publicImagePath, filename)
 
 	data, err := os.ReadFile(filePath)
 	if err != nil {
@@ -133,6 +137,20 @@ func (a *App) DeleteOneHistory(id uint) Response {
 	}
 
 	result := db.Table("history_test").Delete(&HistoryItem{}, id)
+	if result.Error != nil {
+		return Response{Code: 1, Message: result.Error.Error()}
+	}
+
+	return Response{Code: 0, Message: "success"}
+}
+
+func (a *App) ClearHistory() Response {
+	db, err := a.GormDB()
+	if err != nil {
+		return Response{Code: 1, Message: err.Error()}
+	}
+
+	result := db.Exec("DELETE FROM history_test")
 	if result.Error != nil {
 		return Response{Code: 1, Message: result.Error.Error()}
 	}

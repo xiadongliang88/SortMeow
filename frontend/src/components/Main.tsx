@@ -1,24 +1,18 @@
 import { useState, useRef } from 'preact/hooks'
 import { message } from '../utils/toast'
+import type { DetectResult } from '../preact'
 
-interface IDetectResult {
-    id: number
-    code: string
-    name: number
-    brief: string
-    confidence_level: number
-}
 
 const Main = () => {
     const fileInputRef = useRef<HTMLInputElement>(null)
-    const [fileName, setFileName] = useState<string>('')
     const [fileSrc, setFileSrc] = useState<string>('')
     const [step, setStep] = useState<number>(0)
-    const [detectResult, setDetectResult] = useState<IDetectResult | null>(null)
+    const [detectResult, setDetectResult] = useState<DetectResult | null>(null)
 
     const handleUploadClick = () => fileInputRef.current?.click()
 
     const handleFileChange = (e: Event) => {
+        console.log('handleFileChange')
         const target = e.target as HTMLInputElement
         const file = target.files?.[0]
         if (file) {
@@ -31,15 +25,11 @@ const Main = () => {
                     Array.from(uint8Array),
                     file.name
                 )
-
                 if (result.code === 0) {
-                    setFileName(result.data)
-
-                    const imgResult = await (window as any).go.main.App.GetImage(result.data)
-                    if (imgResult.code === 0) {
-                        setFileSrc(imgResult.data)
-                        setStep(1)
-                    }
+                    setFileSrc(result.data)
+                    setStep(1)
+                } else if (result.code === 1) {
+                    message.error(result.message)
                 }
             }
             reader.readAsArrayBuffer(file)
@@ -63,7 +53,7 @@ const Main = () => {
         setStep(2)
 
         setTimeout(async() => {
-            const result = await (window as any).go.main.App.Detect(fileName)
+            const result = await (window as any).go.main.App.Detect(fileSrc)
             if (result.code === 0) {
                 setDetectResult(result.data)
                 setStep(3)
@@ -104,7 +94,7 @@ const Main = () => {
                     >
                         {fileSrc.length > 0 && step == 1 ?
                             <div id="previewContent">
-                                <img src={fileSrc} id="previewImage" />
+                                <img src={`/images/${fileSrc}`} id="previewImage" />
                                 <button onClick={handleRemovePhoto}>
                                     ❌ 移除照片
                                 </button>

@@ -3,6 +3,8 @@
 import {main} from '../models';
 import {gorm} from '../models';
 
+export function ClearHistory():Promise<main.Response>;
+
 export function DeleteOneHistory(arg1:number):Promise<main.Response>;
 
 export function Detect(arg1:string):Promise<main.Response>;

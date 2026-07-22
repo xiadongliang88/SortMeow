@@ -1,18 +1,13 @@
 import { useState, useEffect } from 'preact/hooks'
+import type { PaginationProps } from '../preact' 
 
-interface IPagination {
-    total: number
-    onChange: (page: number) => void
-    page: number
-    pagesize: number
-}
 
 const Pagination = ({
     total,
     onChange,
     page,
     pagesize,
-}: IPagination) => {
+}: PaginationProps) => {
     const [value, setValue] = useState<string>('1')
     const [num, setNum] = useState<number>(1)
     const [seqNums, setSeqNums] = useState<[number, number][]>([])
