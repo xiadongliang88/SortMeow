@@ -1,4 +1,4 @@
-module dissertation
+module sortmeow
 
 go 1.25.0
 
