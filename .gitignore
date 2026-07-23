@@ -31,3 +31,4 @@ nn/models/*.pt
 build/bin
 frontend/node_modules
 frontend/dist
+frontend/public

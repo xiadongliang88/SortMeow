@@ -1,5 +1,5 @@
 import { Router, Route } from "preact-router"
-import { Navbar } from "../components/Navbar"
+import Navbar from "../components/Navbar"
 import Main from "../components/Main"
 import History from "../components/History"
 import { Footer } from "../components/Footer"

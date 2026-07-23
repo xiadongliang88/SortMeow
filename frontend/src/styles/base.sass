@@ -1,4 +1,5 @@
 html
+    font-size: 16px
     text-align: center
     color: white
 
@@ -7,6 +8,39 @@ body
     color: white
     font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI"
     overflow: hidden
+
+body, ul, ol, li, p, h1, h2, h3, h4, h5, h6,
+form, fieldset, img, div, pre
+    margin: 0
+    padding: 0
+    outline: 0
+    border: 0
+
+ul, li, ol
+    list-style-type: none
+
+select, textarea, button
+    background: transparent
+    border: none
+    outline: none
+
+button:focus,input:focus, code:focus, pre:focus, video
+    outline: none
+
+button, i, img
+    cursor: pointer
+    user-select: none
+    -webkit-user-select: none
+    -moz-user-select: none
+    -khtml-user-select: none
+    -ms-user-select: none
+
+a
+    text-decoration: none
+    color: #5470c6
+
+.hidden
+    display: none
 
 @font-face
     font-family: "Nunito"
@@ -44,8 +78,7 @@ body
         display: inline-flex
         align-items: center
         justify-content: space-between
-        width: 100%
-        margin: 0 auto
+        width: calc(100% - 2.4rem)
         padding: 0.6rem 1.2rem
         background-color: white
         backdrop-filter: blur(8px)
@@ -57,12 +90,19 @@ body
             display: flex
             align-items: center
             gap: 0.75rem
-            cursor: pointer
 
             .icon
                 width: 2rem
                 height: 2rem
                 color: var(--primary)
+
+            > span
+                font-weight: 600
+                font-size: 1.25rem
+                color: var(--title)
+
+                > span
+                    color: var(--primary)
 
         .container-right
             display: flex
@@ -76,8 +116,8 @@ body
                 font-size: 0.9375rem
                 cursor: pointer
 
-                &:hover
-                    color: var(--primary)
+            .active
+                color: var(--primary)
 
             > button
                 width: 7rem
@@ -183,6 +223,8 @@ body
                             color: var(--textsub)
 
                 #previewContent
+                    display: flex
+                    flex-direction: column
                     margin-top: 0.5rem
 
                     > img
@@ -213,10 +255,9 @@ body
                         width: 4rem
                         height: 4rem
                         margin: 0 auto 1rem auto
-                        border-width: 4px
-                        border-color: var(--primary)
+                        border: 0.25rem solid var(--primary)
                         border-top-color: transparent
-                        border-radius: 4rem
+                        border-radius: 50%
                         animation: spin 1s linear infinite
 
                     @keyframes spin
@@ -257,6 +298,7 @@ body
 
         .result
             width: 35rem
+            height: 1.5rem
             margin: 0 auto
 
             .result-complete
@@ -275,7 +317,7 @@ body
                 > h2
                     font-family: "SANS_SC_BOLD"
                     font-weight: bold
-                    font-size: 1.5rem
+                    font-size: 1.375rem
                     color: var(--title)
 
             .result-main
@@ -286,11 +328,11 @@ body
                 background-color: white
                 border-radius: 1rem
                 border: 1px solid var(--color-border)
-                gap: 2rem
+                gap: 1.5rem
 
                 > img
-                    width: 8rem
-                    height: 8rem
+                    max-width: 8rem
+                    max-height: 8rem
                     background-color: #333
                     border-radius: 0.5rem
 
@@ -299,7 +341,7 @@ body
                     flex-direction: column
                     justify-content: flex-start
                     align-items: flex-start
-                    width: calc(100% - 10rem)
+                    width: calc(100% - 9.5rem)
 
                     > div
                         display: flex
@@ -377,7 +419,6 @@ body
     justify-content: center
     position: fixed
     width: 100vw
-    height: 5rem
     background-color: #131313
     padding: 2rem 1rem
     bottom: 0
