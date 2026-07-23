@@ -155,5 +155,12 @@ func (a *App) ClearHistory() Response {
 		return Response{Code: 1, Message: result.Error.Error()}
 	}
 
+	if err := os.RemoveAll(publicImagePath); err != nil {
+		return Response{Code: 1, Message: fmt.Sprintf("failed to remove images: %v", err)}
+	}
+	if err := os.MkdirAll(publicImagePath, 0755); err != nil {
+		return Response{Code: 1, Message: fmt.Sprintf("failed to recreate images dir: %v", err)}
+	}
+
 	return Response{Code: 0, Message: "success"}
 }

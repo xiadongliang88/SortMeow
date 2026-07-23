@@ -23,7 +23,7 @@ const Navbar = () => {
                     <span>分类<span>喵</span></span>
                 </div>
                 <div class="container-right">
-                    <a href="/" onClick={handleNavColor}>主页</a>
+                    <a href="/" class="active" onClick={handleNavColor}>主页</a>
                     <a href="/history" onClick={handleNavColor}>历史记录</a>
                     <button onClick={handleClick}>查看代码</button>
                 </div>
