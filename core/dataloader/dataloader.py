@@ -3,7 +3,7 @@ import glob
 from torchvision import transforms
 from torch.utils.data import DataLoader, Dataset
 from PIL import Image
-from nn.const import label_name, input_size, batch_size
+from core.const import label_name, input_size, batch_size
 
 
 label_dict = {}

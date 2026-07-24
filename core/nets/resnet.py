@@ -1,6 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
-from nn.const import num_classes
+from core.const import num_classes
 
 
 class ResBlock(nn.Module):

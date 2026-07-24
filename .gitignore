@@ -23,10 +23,10 @@ env/
 
 uploads/*
 
-nn/dataset/toy/*
-nn/dataset/benchmark/*
-nn/models/*.pth
-nn/models/*.pt
+core/dataset/toy/*
+core/dataset/benchmark/*
+core/models/*.pth
+core/models/*.pt
 
 build/bin
 frontend/node_modules

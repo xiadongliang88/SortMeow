@@ -1,6 +1,6 @@
 import torch.nn as nn
 from torchvision import models
-from nn.const import num_classes
+from core.const import num_classes
 
 
 class resnet18(nn.Module):

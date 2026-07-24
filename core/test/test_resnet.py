@@ -4,8 +4,8 @@ import torch
 from torchvision import transforms
 from PIL import Image
 import numpy as np
-from nn.nets.resnet import resnet
-from nn.const import label_name, input_size
+from core.nets.resnet import resnet
+from core.const import label_name, input_size
 
 
 def test():

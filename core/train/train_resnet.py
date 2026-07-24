@@ -1,8 +1,8 @@
 import os
 import torch
-from nn.nets.resnet import resnet
-from nn.dataloader.dataloader import train_dataloader
-from nn.const import epoch, lr, batch_size
+from core.nets.resnet import resnet
+from core.dataloader.dataloader import train_dataloader
+from core.const import epoch, lr, batch_size
 
 
 def train():
