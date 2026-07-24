@@ -41,10 +41,12 @@ def train():
         scheduler.step()
         print("lr: ", optimizer.state_dict()['param_groups'][0]['lr'])
 
-        if not os.path.exists("./models"):
-            os.makedirs("./models")
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        model_dir = os.path.join(script_dir, "..", "models")
+        if not os.path.exists(model_dir):
+            os.makedirs(model_dir)
 
-        torch.save(net.state_dict(), "./models/resnet18_epoch_{}.pth".format(e + 1))
+        torch.save(net.state_dict(), os.path.join(model_dir, "resnet18_epoch_{}.pth".format(e + 1)))
 
 
 if __name__ == "__main__":

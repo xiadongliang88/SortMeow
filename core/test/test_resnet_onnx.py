@@ -1,0 +1,57 @@
+import cv2
+import glob
+import numpy as np
+from PIL import Image
+import onnxruntime as ort  # 【修改1】替换torch导入
+from torchvision import transforms  # 保留transforms，仍用于预处理
+from core.const import label_name, input_size
+
+
+def test():
+    # 【修改2】选择ONNX Runtime的执行提供程序，自动选择CPU或CUDA
+    providers = ['CUDAExecutionProvider', 'CPUExecutionProvider'] if 'CUDAExecutionProvider' in ort.get_available_providers() else ['CPUExecutionProvider']
+    print(f"使用设备: {providers[0]}")
+
+    # 【修改3】加载ONNX模型，替代原来的PyTorch模型加载
+    session = ort.InferenceSession("./model/resnet_final.onnx", providers=providers)
+    
+    # 获取输入名称（用于后续推理时指定输入）
+    input_name = session.get_inputs()[0].name
+
+    im_list = glob.glob("./dataset/test/*/*.jpg")
+    np.random.shuffle(im_list)
+
+    # 预处理完全不变
+    test_transform = transforms.Compose([
+        transforms.Resize(input_size),
+        transforms.CenterCrop(input_size),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])
+
+    for im_path in im_list:
+        im_data = Image.open(im_path)
+
+        inputs = test_transform(im_data)
+        inputs = torch.unsqueeze(inputs, dim=0)  # 这里还在用torch，下面会改
+
+        # 【修改4】将输入转为numpy，ONNX Runtime需要numpy输入
+        inputs = inputs.numpy()
+        if providers[0] == 'CPUExecutionProvider':
+            inputs = inputs.astype(np.float32)
+
+        # 【修改5】ONNX Runtime推理，输出直接是numpy数组
+        outputs = session.run(None, {input_name: inputs})[0]
+
+        # 【修改6】解析结果，直接用numpy操作
+        pred = np.argmax(outputs, axis=1)
+        print(label_name[pred[0]], " ", im_path)
+
+        img = np.asarray(im_data)
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        cv2.imshow("img", img)
+        cv2.waitKey(0)
+
+
+if __name__ == "__main__":
+    test()

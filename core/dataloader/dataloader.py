@@ -3,7 +3,7 @@ import glob
 from torchvision import transforms
 from torch.utils.data import DataLoader, Dataset
 from PIL import Image
-from core.const import label_name, input_size, batch_size
+from core.const import mode, label_name, input_size, batch_size
 
 
 label_dict = {}
@@ -17,7 +17,7 @@ def default_loader(path):
 
 
 train_transform = transforms.Compose([
-    transforms.Resize((input_size)),
+    transforms.Resize(input_size),
     transforms.CenterCrop(input_size),
     transforms.RandomHorizontalFlip(p=0.5),  #  50%的概率（p=0.5）水平翻转图片
     transforms.RandomRotation(10),  # 轻微旋转
@@ -62,8 +62,8 @@ class MyDataset(Dataset):
 
 
 dataset_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-im_train_list = glob.glob(os.path.join(dataset_root, "dataset", "toy", "train", "*", "*.jpg"))
-im_test_list = glob.glob(os.path.join(dataset_root, "dataset", "toy", "test", "*", "*.jpg"))
+im_train_list = glob.glob(os.path.join(dataset_root, "dataset", mode, "train", "*", "*.jpg"))
+im_test_list = glob.glob(os.path.join(dataset_root, "dataset", mode, "test", "*", "*.jpg"))
 
 
 train_dataset = MyDataset(im_train_list, transform=train_transform)
