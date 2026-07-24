@@ -27,6 +27,7 @@ core/dataset/toy/*
 core/dataset/benchmark/*
 core/models/*.pth
 core/models/*.pt
+core/models/*.onnx
 
 build/bin
 frontend/node_modules
