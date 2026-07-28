@@ -1,4 +1,4 @@
-mode = "toy"
+mode = "benchmark"
 
 """
 epoch       训练多少轮
@@ -27,8 +27,8 @@ if mode == "toy":
     num_classes = len(label_name)
 elif mode == "benchmark":
     epoch = 50
-    lr = 2e-4
-    batch_size = 2
+    lr = 1e-4
+    batch_size = 8
     input_size = 224
 
     # 分类
@@ -39,6 +39,9 @@ elif mode == "benchmark":
         "exotic_shorthair",
         "maine_coon",
         "ragdoll",
+        "scottish_fold",
+        "siamese",
         "sphynx",
+        "turkish_van",
     ]
     num_classes = len(label_name)

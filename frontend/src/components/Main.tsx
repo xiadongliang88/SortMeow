@@ -60,7 +60,7 @@ const Main = () => {
                 const arrayBuffer = await processedFile.arrayBuffer()
                 const uint8Array = new Uint8Array(arrayBuffer)
 
-                const result = await (window as any).go.main.App.UploadImage(
+                const result = await (window as any).go.backend.App.UploadImage(
                     Array.from(uint8Array),
                     file.name
                 )
@@ -92,11 +92,12 @@ const Main = () => {
         setStep(2)
 
         setTimeout(async() => {
-            const result = await (window as any).go.main.App.Detect(fileSrc)
+            const result = await (window as any).go.backend.App.Detect(fileSrc)
             if (result.code === 0) {
                 setDetectResult(result.data)
                 setStep(3)
             } else if (result.code === 1) {
+                console.log("result.message", result.message)
                 message.error(result.message)
             }
         }, 1000)

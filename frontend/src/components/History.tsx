@@ -27,7 +27,7 @@ const History = () => {
     const [showClear, setShowClear] = useState<boolean>(false)
 
     useEffect(() => {
-        if (!(window as any).go?.main?.App?.GetHistory) {
+        if (!(window as any).go?.backend?.App?.GetHistory) {
             message.error('Wails runtime not ready')
             return
         }
@@ -35,7 +35,7 @@ const History = () => {
     }, [])
 
     const fetchData = async(page: number) => {
-        const result = await (window as any).go.main.App.GetHistory(page, pageSize)
+        const result = await (window as any).go.backend.App.GetHistory(page, pageSize)
         if (result.code === 0) {
             setHistoryList(result.data.list)
             setTotal(result.data.total)
@@ -60,7 +60,7 @@ const History = () => {
             message.error('currentId为空')
             return
         }
-        const result = await (window as any).go.main.App.DeleteOneHistory(currentId)
+        const result = await (window as any).go.backend.App.DeleteOneHistory(currentId)
         if (result.code === 0) {
             message.success('删除成功')
             setCurrentId(null)
@@ -79,7 +79,7 @@ const History = () => {
 
     const handleClearOk = async() => {
         setShowClear(false)
-        const result = await (window as any).go.main.App.ClearHistory()
+        const result = await (window as any).go.backend.App.ClearHistory()
         if (result.code === 0) {
             message.success('已清空历史')
             setCurrentId(null)

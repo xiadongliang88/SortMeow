@@ -1,3 +1,4 @@
+import os
 import cv2
 import glob
 import torch
@@ -5,17 +6,26 @@ from torchvision import transforms
 from PIL import Image
 import numpy as np
 from core.nets.resnet18 import resnet18
-from core.const import label_name, input_size
+from core.const import mode, label_name, input_size
 
 
 def test():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(device)
 
-    net = resnet18()
-    net.load_state_dict(torch.load("./model/resnet_epoch_14.pth", weights_only=True))
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    core_dir = os.path.dirname(script_dir)
+    model_dir = os.path.join(core_dir, "models")
+    dataset_dir = os.path.join(core_dir, "dataset", mode, "test")
 
-    im_list = glob.glob("./dataset/test/*/*.jpg")
+    print("model_dir", model_dir)
+
+    net = resnet18()
+    # net.load_state_dict(torch.load("./models/resnet18_epoch_100.pth", weights_only=True))
+    net.load_state_dict(torch.load(os.path.join(model_dir, "resnet18_epoch_50_bak2.pth"), weights_only=True))
+
+    # im_list = glob.glob("./dataset/test/*/*.jpg")
+    im_list = glob.glob(os.path.join(dataset_dir, "*", "*.jpg"))
     np.random.shuffle(im_list)
 
     net.to(device)
@@ -41,12 +51,13 @@ def test():
         _, pred = torch.max(outputs.data, dim=1)
         print(label_name[pred.cpu().numpy()[0]], " ", im_path)
 
-        # prob, pred = torch.topk(outputs.data, k=3, dim=1)
+        prob, pred = torch.topk(outputs.data, k=3, dim=1)
         # for i in range(3):
         #     print(label_name[pred[0, i].item()], " ", prob[0, i].item(), " ", im_path)
 
         img = np.asarray(im_data)
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        img = cv2.resize(img, (200, 200))
         cv2.imshow("img", img)
         cv2.waitKey(0)
 

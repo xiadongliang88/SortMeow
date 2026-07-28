@@ -11,7 +11,7 @@ const ImagePreview = ({ filename, ...props }: Props) => {
 
     useEffect(() => {
         const loadImage = async () => {
-            const result = await (window as any).go.main.App.GetImage(filename)
+            const result = await (window as any).go.backend.App.GetImage(filename)
             if (result.code === 0) {
                 setSrc(result.data)
             }
