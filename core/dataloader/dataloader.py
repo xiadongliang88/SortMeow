@@ -21,10 +21,10 @@ train_transform = transforms.Compose([
     transforms.CenterCrop(input_size),
     transforms.RandomHorizontalFlip(p=0.5),  #  50%的概率（p=0.5）水平翻转图片
     transforms.RandomRotation(10),  # 轻微旋转
-    transforms.ColorJitter(brightness=0.1, contrast=0.1),
+    transforms.ColorJitter(brightness=0.1, contrast=0.1),  # 随机亮度和对比度
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-    transforms.RandomErasing(p=0.5, scale=(0.02, 0.2), ratio=(0.3, 3.3)),
+    # transforms.RandomErasing(p=0.5, scale=(0.02, 0.2), ratio=(0.3, 3.3)),
 ])
 
 

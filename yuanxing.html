@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分类喵 - 项目原型图</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: #666;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>分类喵 - 项目原型图</h1>
+        <p>基于深度残差网络的猫咪图片分类应用 | 桌面端</p>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 650" width="1400" height="650">
+        <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#999"/>
+            </marker>
+        </defs>
+
+        <!-- 页面1: 首页 -->
+        <g id="page1" transform="translate(30, 20)">
+            <!-- 窗口标题栏 -->
+            <rect x="0" y="0" width="400" height="30" rx="6" fill="#e0e0e0"/>
+            <circle cx="15" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <circle cx="32" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <circle cx="49" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="200" y="20" font-size="11" fill="#666" text-anchor="middle">分类喵 - 桌面应用</text>
+
+            <!-- 导航栏 -->
+            <rect x="0" y="30" width="400" height="50" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="20" y="60" font-size="14" font-weight="bold">分类喵</text>
+            <line x1="100" y1="40" x2="100" y2="70" stroke="#ddd" stroke-width="1"/>
+            <text x="120" y="60" font-size="12" fill="#333">主页</text>
+            <text x="175" y="60" font-size="12" fill="#999">历史记录</text>
+            <rect x="320" y="42" width="60" height="26" rx="4" fill="#f5f5f5" stroke="#ddd"/>
+            <text x="350" y="59" font-size="10" fill="#666" text-anchor="middle">查看代码</text>
+
+            <!-- 主内容区 -->
+            <rect x="0" y="80" width="400" height="520" fill="#fafafa"/>
+
+            <!-- 标题 -->
+            <text x="40" y="130" font-size="20" fill="#333" font-weight="bold">发现<tspan fill="#666">它</tspan>的<tspan fill="#666">分类</tspan></text>
+            <text x="40" y="155" font-size="11" fill="#888">上传一张猫咪照片，让AI认出它是什么</text>
+            <text x="40" y="175" font-size="10" fill="#aaa">⚡ 基于深度残差网络</text>
+
+            <!-- 上传区域 -->
+            <rect x="40" y="200" width="320" height="200" rx="8" fill="#fff" stroke="#ccc" stroke-width="1.5" stroke-dasharray="6 3"/>
+            <!-- 上传图标 -->
+            <g transform="translate(200, 270)">
+                <circle cx="0" cy="0" r="35" fill="none" stroke="#ccc" stroke-width="1.5"/>
+                <path d="M-12 5 L0 -10 L12 5 M-8 15 L0 2 L8 15" stroke="#999" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <text x="200" y="330" font-size="12" fill="#666" text-anchor="middle">点击或拖拽上传图片</text>
+            <text x="200" y="350" font-size="10" fill="#aaa" text-anchor="middle">支持 JPG、PNG、JPEG 格式</text>
+
+            <!-- 按钮 -->
+            <rect x="40" y="420" width="320" height="40" rx="6" fill="none" stroke="#999" stroke-width="1.5"/>
+            <text x="200" y="445" font-size="12" fill="#666" text-anchor="middle">🔍 开始检测</text>
+
+            <!-- 页面标签 -->
+            <text x="200" y="620" font-size="11" fill="#666" text-anchor="middle" font-weight="bold">图1: 首页</text>
+        </g>
+
+        <!-- 页面2: 预览状态 -->
+        <g id="page2" transform="translate(470, 20)">
+            <rect x="0" y="0" width="400" height="30" rx="6" fill="#e0e0e0"/>
+            <circle cx="15" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <circle cx="32" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <circle cx="49" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="200" y="20" font-size="11" fill="#666" text-anchor="middle">分类喵 - 桌面应用</text>
+
+            <rect x="0" y="30" width="400" height="50" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="20" y="60" font-size="14" font-weight="bold">分类喵</text>
+            <line x1="100" y1="40" x2="100" y2="70" stroke="#ddd" stroke-width="1"/>
+            <text x="120" y="60" font-size="12" fill="#333">主页</text>
+            <text x="175" y="60" font-size="12" fill="#999">历史记录</text>
+            <rect x="320" y="42" width="60" height="26" rx="4" fill="#f5f5f5" stroke="#ddd"/>
+            <text x="350" y="59" font-size="10" fill="#666" text-anchor="middle">查看代码</text>
+
+            <rect x="0" y="80" width="400" height="520" fill="#fafafa"/>
+
+            <text x="40" y="130" font-size="20" fill="#333" font-weight="bold">发现<tspan fill="#666">它</tspan>的<tspan fill="#666">分类</tspan></text>
+            <text x="40" y="155" font-size="11" fill="#888">上传一张猫咪照片，让AI认出它是什么</text>
+            <text x="40" y="175" font-size="10" fill="#aaa">⚡ 基于深度残差网络</text>
+
+            <!-- 上传区域-有图片 -->
+            <rect x="40" y="200" width="320" height="200" rx="8" fill="#fff" stroke="#999" stroke-width="1.5"/>
+            <!-- 图片区域 -->
+            <rect x="60" y="220" width="140" height="160" rx="4" fill="#f0f0f0" stroke="#ddd" stroke-width="1"/>
+            <!-- 猫图标 -->
+            <g transform="translate(130, 300)">
+                <ellipse cx="0" cy="15" rx="35" ry="25" fill="none" stroke="#999" stroke-width="1.5"/>
+                <ellipse cx="-18" cy="-5" rx="14" ry="16" fill="none" stroke="#999" stroke-width="1.5"/>
+                <ellipse cx="18" cy="-5" rx="14" ry="16" fill="none" stroke="#999" stroke-width="1.5"/>
+                <ellipse cx="0" cy="20" rx="6" ry="4" fill="none" stroke="#999" stroke-width="1"/>
+            </g>
+            <!-- 移除按钮 -->
+            <rect x="60" y="220" width="50" height="22" rx="4" fill="#fff" stroke="#ccc"/>
+            <text x="85" y="235" font-size="9" fill="#666" text-anchor="middle">移除</text>
+
+            <!-- 开始检测按钮 -->
+            <rect x="40" y="420" width="320" height="40" rx="6" fill="#333"/>
+            <text x="200" y="445" font-size="12" fill="#fff" text-anchor="middle">🔍 开始检测</text>
+
+            <text x="200" y="620" font-size="11" fill="#666" text-anchor="middle" font-weight="bold">图2: 图片预览</text>
+        </g>
+
+        <!-- 页面3: 检测中 -->
+        <g id="page3" transform="translate(910, 20)">
+            <rect x="0" y="0" width="400" height="30" rx="6" fill="#e0e0e0"/>
+            <circle cx="15" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <circle cx="32" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <circle cx="49" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="200" y="20" font-size="11" fill="#666" text-anchor="middle">分类喵 - 桌面应用</text>
+
+            <rect x="0" y="30" width="400" height="50" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="20" y="60" font-size="14" font-weight="bold">分类喵</text>
+            <line x1="100" y1="40" x2="100" y2="70" stroke="#ddd" stroke-width="1"/>
+            <text x="120" y="60" font-size="12" fill="#333">主页</text>
+            <text x="175" y="60" font-size="12" fill="#999">历史记录</text>
+            <rect x="320" y="42" width="60" height="26" rx="4" fill="#f5f5f5" stroke="#ddd"/>
+            <text x="350" y="59" font-size="10" fill="#666" text-anchor="middle">查看代码</text>
+
+            <rect x="0" y="80" width="400" height="520" fill="#fafafa"/>
+
+            <text x="40" y="130" font-size="20" fill="#333" font-weight="bold">发现<tspan fill="#666">它</tspan>的<tspan fill="#666">分类</tspan></text>
+            <text x="40" y="155" font-size="11" fill="#888">上传一张猫咪照片，让AI认出它是什么</text>
+            <text x="40" y="175" font-size="10" fill="#aaa">⚡ 基于深度残差网络</text>
+
+            <!-- 上传区域-加载中 -->
+            <rect x="40" y="200" width="320" height="200" rx="8" fill="#fff" stroke="#999" stroke-width="1.5"/>
+            <!-- 加载动画 -->
+            <g transform="translate(200, 280)">
+                <circle cx="0" cy="0" r="35" fill="none" stroke="#ddd" stroke-width="2"/>
+                <path d="M0 -35 A35 35 0 0 1 35 0" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round">
+                    <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="1s" repeatCount="indefinite"/>
+                </path>
+            </g>
+            <text x="200" y="340" font-size="13" fill="#333" text-anchor="middle" font-weight="500">正在检测...</text>
+            <text x="200" y="360" font-size="11" fill="#999" text-anchor="middle">请耐心等待~</text>
+
+            <text x="200" y="620" font-size="11" fill="#666" text-anchor="middle" font-weight="bold">图3: 检测中</text>
+        </g>
+
+        <!-- 页面4: 结果 -->
+        <g id="page4" transform="translate(30, 420)">
+            <rect x="0" y="0" width="400" height="30" rx="6" fill="#e0e0e0"/>
+            <circle cx="15" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <circle cx="32" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <circle cx="49" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="200" y="20" font-size="11" fill="#666" text-anchor="middle">分类喵 - 桌面应用</text>
+
+            <rect x="0" y="30" width="400" height="50" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="20" y="60" font-size="14" font-weight="bold">分类喵</text>
+            <line x1="100" y1="40" x2="100" y2="70" stroke="#ddd" stroke-width="1"/>
+            <text x="120" y="60" font-size="12" fill="#333">主页</text>
+            <text x="175" y="60" font-size="12" fill="#999">历史记录</text>
+            <rect x="320" y="42" width="60" height="26" rx="4" fill="#f5f5f5" stroke="#ddd"/>
+            <text x="350" y="59" font-size="10" fill="#666" text-anchor="middle">查看代码</text>
+
+            <rect x="0" y="80" width="400" height="520" fill="#fafafa"/>
+
+            <text x="40" y="130" font-size="20" fill="#333" font-weight="bold">发现<tspan fill="#666">它</tspan>的<tspan fill="#666">分类</tspan></text>
+
+            <!-- 完成标记 -->
+            <g transform="translate(200, 175)">
+                <circle cx="0" cy="0" r="18" fill="none" stroke="#666" stroke-width="1.5"/>
+                <path d="M-7 0 L-2 5 L8 -6" stroke="#666" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <text x="200" y="210" font-size="12" fill="#333" text-anchor="middle" font-weight="500">检测完成</text>
+
+            <!-- 结果卡片 -->
+            <rect x="40" y="230" width="320" height="180" rx="8" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <!-- 图片 -->
+            <rect x="60" y="250" width="100" height="100" rx="4" fill="#f0f0f0" stroke="#ddd"/>
+            <g transform="translate(110, 300)">
+                <ellipse cx="0" cy="15" rx="28" ry="20" fill="none" stroke="#999" stroke-width="1.5"/>
+                <ellipse cx="-14" cy="-2" rx="11" ry="13" fill="none" stroke="#999" stroke-width="1.5"/>
+                <ellipse cx="14" cy="-2" rx="11" ry="13" fill="none" stroke="#999" stroke-width="1.5"/>
+                <ellipse cx="0" cy="20" rx="5" ry="3" fill="none" stroke="#999" stroke-width="1"/>
+            </g>
+
+            <!-- 结果信息 -->
+            <text x="180" y="270" font-size="14" fill="#333" font-weight="bold">英短蓝猫</text>
+            <!-- 置信度条 -->
+            <rect x="180" y="285" width="160" height="8" rx="4" fill="#e5e5e5"/>
+            <rect x="180" y="285" width="136" height="8" rx="4" fill="#666"/>
+            <text x="180" y="310" font-size="10" fill="#666">置信度 85.6%</text>
+
+            <!-- 描述 -->
+            <text x="60" y="440" font-size="11" fill="#888">英国短毛猫是传统英国本地猫的纯种版本...</text>
+
+            <!-- 按钮 -->
+            <rect x="40" y="460" width="320" height="40" rx="6" fill="none" stroke="#666" stroke-width="1.5"/>
+            <text x="200" y="485" font-size="12" fill="#666" text-anchor="middle">🔄 再试一张</text>
+
+            <text x="200" y="620" font-size="11" fill="#666" text-anchor="middle" font-weight="bold">图4: 检测结果</text>
+        </g>
+
+        <!-- 页面5: 历史记录 -->
+        <g id="page5" transform="translate(470, 420)">
+            <rect x="0" y="0" width="400" height="30" rx="6" fill="#e0e0e0"/>
+            <circle cx="15" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <circle cx="32" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <circle cx="49" cy="15" r="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="200" y="20" font-size="11" fill="#666" text-anchor="middle">分类喵 - 桌面应用</text>
+
+            <rect x="0" y="30" width="400" height="50" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="20" y="60" font-size="14" font-weight="bold">分类喵</text>
+            <line x1="100" y1="40" x2="100" y2="70" stroke="#ddd" stroke-width="1"/>
+            <text x="120" y="60" font-size="12" fill="#999">主页</text>
+            <text x="175" y="60" font-size="12" fill="#333">历史记录</text>
+            <rect x="320" y="42" width="60" height="26" rx="4" fill="#f5f5f5" stroke="#ddd"/>
+            <text x="350" y="59" font-size="10" fill="#666" text-anchor="middle">查看代码</text>
+
+            <rect x="0" y="80" width="400" height="520" fill="#fafafa"/>
+
+            <text x="40" y="120" font-size="16" fill="#333" font-weight="bold">历史记录</text>
+            <!-- 清空按钮 -->
+            <rect x="320" y="105" width="40" height="28" rx="4" fill="#fff" stroke="#ccc"/>
+            <text x="340" y="123" font-size="11" fill="#666" text-anchor="middle">🗑️</text>
+
+            <!-- 历史记录卡片1 -->
+            <rect x="40" y="145" width="320" height="90" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <rect x="55" y="160" width="60" height="60" rx="4" fill="#f0f0f0" stroke="#ddd"/>
+            <g transform="translate(85, 190)">
+                <ellipse cx="0" cy="10" rx="20" ry="14" fill="none" stroke="#999" stroke-width="1"/>
+                <ellipse cx="-10" cy="-2" rx="8" ry="10" fill="none" stroke="#999" stroke-width="1"/>
+                <ellipse cx="10" cy="-2" rx="8" ry="10" fill="none" stroke="#999" stroke-width="1"/>
+            </g>
+            <text x="130" y="180" font-size="13" fill="#333" font-weight="500">英短蓝猫</text>
+            <text x="130" y="200" font-size="10" fill="#999">2024/07/27 15:32</text>
+            <text x="130" y="218" font-size="10" fill="#888">英国短毛猫是传统英国...</text>
+            <text x="350" y="175" font-size="14" fill="#999" text-anchor="middle">×</text>
+
+            <!-- 历史记录卡片2 -->
+            <rect x="40" y="245" width="320" height="90" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <rect x="55" y="260" width="60" height="60" rx="4" fill="#f0f0f0" stroke="#ddd"/>
+            <g transform="translate(85, 290)">
+                <ellipse cx="0" cy="10" rx="20" ry="14" fill="none" stroke="#999" stroke-width="1"/>
+                <ellipse cx="-10" cy="-2" rx="8" ry="10" fill="none" stroke="#999" stroke-width="1"/>
+                <ellipse cx="10" cy="-2" rx="8" ry="10" fill="none" stroke="#999" stroke-width="1"/>
+            </g>
+            <text x="130" y="280" font-size="13" fill="#333" font-weight="500">狸花猫</text>
+            <text x="130" y="300" font-size="10" fill="#999">2024/07/27 14:20</text>
+            <text x="130" y="318" font-size="10" fill="#888">狸花猫是中华田园...</text>
+            <text x="350" y="275" font-size="14" fill="#999" text-anchor="middle">×</text>
+
+            <!-- 分页 -->
+            <g transform="translate(200, 370)">
+                <rect x="-100" y="0" width="36" height="32" rx="4" fill="#fff" stroke="#ccc"/>
+                <text x="-82" y="21" font-size="12" fill="#666" text-anchor="middle">‹</text>
+                <rect x="-58" y="0" width="36" height="32" rx="4" fill="#333" stroke="#333"/>
+                <text x="-40" y="21" font-size="12" fill="#fff" text-anchor="middle">1</text>
+                <rect x="-16" y="0" width="36" height="32" rx="4" fill="#fff" stroke="#ccc"/>
+                <text x="2" y="21" font-size="12" fill="#666" text-anchor="middle">2</text>
+                <rect x="26" y="0" width="36" height="32" rx="4" fill="#fff" stroke="#ccc"/>
+                <text x="44" y="21" font-size="12" fill="#666" text-anchor="middle">›</text>
+            </g>
+
+            <!-- 删除确认弹窗 -->
+            <rect x="80" y="160" width="240" height="130" rx="8" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="200" y="195" font-size="13" fill="#333" text-anchor="middle" font-weight="500">信息</text>
+            <line x1="80" y1="210" x2="320" y2="210" stroke="#eee"/>
+            <text x="200" y="240" font-size="12" fill="#666" text-anchor="middle">确定要删除当前记录？</text>
+            <rect x="100" y="260" width="80" height="32" rx="4" fill="#fff" stroke="#ccc"/>
+            <text x="140" y="281" font-size="11" fill="#666" text-anchor="middle">取消</text>
+            <rect x="220" y="260" width="80" height="32" rx="4" fill="#333"/>
+            <text x="260" y="281" font-size="11" fill="#fff" text-anchor="middle">确定</text>
+
+            <text x="200" y="620" font-size="11" fill="#666" text-anchor="middle" font-weight="bold">图5: 历史记录</text>
+        </g>
+
+        <!-- 连接线和标注 -->
+        <g stroke="#999" stroke-width="1" fill="none" marker-end="url(#arrow)">
+            <path d="M435 280 L465 280"/>
+            <path d="M875 280 L905 280"/>
+            <path d="M435 580 L465 580"/>
+            <path d="M875 580 L905 580"/>
+        </g>
+
+        <!-- 底部说明 -->
+        <g transform="translate(910, 420)">
+            <text x="0" y="0" font-size="12" fill="#666" font-weight="bold">原型图说明</text>
+            <text x="0" y="25" font-size="10" fill="#888">• 图1: 首页 - 上传猫咪图片</text>
+            <text x="0" y="43" font-size="10" fill="#888">• 图2: 预览 - 确认上传图片</text>
+            <text x="0" y="61" font-size="10" fill="#888">• 图3: 检测中 - AI正在识别</text>
+            <text x="0" y="79" font-size="10" fill="#888">• 图4: 结果 - 显示分类信息</text>
+            <text x="0" y="97" font-size="10" fill="#888">• 图5: 历史 - 管理识别记录</text>
+        </g>
+    </svg>
+</body>
+</html>
