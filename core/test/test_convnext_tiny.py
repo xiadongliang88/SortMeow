@@ -5,7 +5,7 @@ import torch
 from torchvision import transforms
 from PIL import Image
 import numpy as np
-from core.nets.resnet18 import resnet18
+from core.nets.convnext_tiny import pytorch_convnext_tiny
 from core.const import mode, label_name, input_size
 
 
@@ -20,8 +20,8 @@ def test():
 
     print("model_dir", model_dir)
 
-    net = resnet18()
-    net.load_state_dict(torch.load(os.path.join(model_dir, "resnet18_epoch_50_bak2.pth"), weights_only=True))
+    net = pytorch_convnext_tiny()
+    net.load_state_dict(torch.load(os.path.join(model_dir, "convnext_tiny_epoch_100.pth"), weights_only=True))
 
     im_list = glob.glob(os.path.join(dataset_dir, "*", "*.jpg"))
     np.random.shuffle(im_list)

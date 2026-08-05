@@ -26,7 +26,7 @@ if mode == "toy":
     ]
     num_classes = len(label_name)
 elif mode == "benchmark":
-    epoch = 50
+    epoch = 100  # convnext->100, resnet18->50
     lr = 1e-4
     batch_size = 8
     input_size = 224
