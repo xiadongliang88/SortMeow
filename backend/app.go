@@ -3,11 +3,11 @@ package backend
 import (
 	"bytes"
 	"context"
-	"encoding/base64"
 	"fmt"
 	"math"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/disintegration/imaging"
@@ -168,7 +168,7 @@ func (a *App) UploadImage(data []byte, filename string) Response {
 	}
 
 	ext := filepath.Ext(filename)
-	newFilename := fmt.Sprintf("%d%s", time.Now().UnixMilli(), ext)
+	newFilename := strconv.FormatInt(time.Now().UnixMilli(), 10) + ext
 	filePath := filepath.Join(uploadsDir, newFilename)
 
 	err = os.WriteFile(filePath, data, 0644)
@@ -179,26 +179,6 @@ func (a *App) UploadImage(data []byte, filename string) Response {
 	println("333")
 
 	return Response{Code: 0, Message: "success", Data: newFilename}
-}
-
-func (a *App) GetImage(filename string) Response {
-	filePath := filepath.Join(publicImagePath, filename)
-
-	data, err := os.ReadFile(filePath)
-	if err != nil {
-		return Response{Code: 1, Message: "failed", Data: err.Error()}
-	}
-
-	ext := filepath.Ext(filename)
-	mimeType := "image/jpeg"
-	if ext == ".png" {
-		mimeType = "image/png"
-	}
-
-	base64Data := base64.StdEncoding.EncodeToString(data)
-	dataURL := "data:image/" + mimeType + ";base64," + base64Data
-
-	return Response{Code: 0, Message: "success", Data: dataURL}
 }
 
 func (a *App) GetHistory(page int, pageSize int) Response {
@@ -230,10 +210,6 @@ func (a *App) Detect(filename string) Response {
 		return Response{Code: 1, Message: err.Error()}
 	}
 
-	/**
-		这里调用模型
-	**/
-
 	filePath := filepath.Join(publicImagePath, filename)
 	imgData, err := os.ReadFile(filePath)
 	if err != nil {
@@ -250,13 +226,6 @@ func (a *App) Detect(filename string) Response {
 	if err != nil {
 		return Response{Code: 1, Message: "model inference failed: " + err.Error()}
 	}
-
-	println("confidence", confidence)
-	println("detectRet", detectRet)
-
-	/**
-		结束
-	**/
 
 	var breed Breed
 	err = db.Table("breeds_test").Where("code = ?", detectRet).First(&breed).Error
@@ -277,7 +246,7 @@ func (a *App) Detect(filename string) Response {
 		Code:            breed.Code,
 		Name:            breed.Name,
 		Brief:           breed.Brief,
-		ConfidenceLevel: 0.98,
+		ConfidenceLevel: confidence,
 	}
 
 	return Response{Code: 0, Message: "success", Data: detectData}

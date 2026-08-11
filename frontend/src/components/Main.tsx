@@ -1,6 +1,5 @@
 import { useState, useRef } from 'preact/hooks'
 import type { DetectResult } from '../preact'
-import ImagePreview from './ImagePreview'
 import { message } from '../utils/toast'
 
 const Main = () => {
@@ -65,6 +64,7 @@ const Main = () => {
                     file.name
                 )
                 if (result.code === 0) {
+                    console.log("rrr", result)
                     setFileSrc(result.data)
                     setStep(1)
                 } else if (result.code === 1) {
@@ -97,7 +97,6 @@ const Main = () => {
                 setDetectResult(result.data)
                 setStep(3)
             } else if (result.code === 1) {
-                console.log("result.message", result.message)
                 message.error(result.message)
             }
         }, 1000)
@@ -108,6 +107,8 @@ const Main = () => {
         setDetectResult(null)
         resetUpload()
     }
+
+    console.log("fff", fileSrc)
 
     return (
         <main class="app-main">
@@ -134,7 +135,7 @@ const Main = () => {
                     >
                         {fileSrc.length > 0 && step == 1 ?
                             <div id="previewContent">
-                                <ImagePreview filename={fileSrc} id="previewImage" />
+                                <img src={`/images/${fileSrc}`} />
                                 <button onClick={handleRemovePhoto}>
                                     ❌ 移除照片
                                 </button>
@@ -193,7 +194,7 @@ const Main = () => {
                         <h2>完成！</h2>
                     </div>
                     <div class="result-main">
-                        <ImagePreview filename={fileSrc} />
+                        <img src={`/images/${fileSrc}`} />
                         <div class="result-word">
                             <div>
                                 <h3>{detectResult?.name}</h3>

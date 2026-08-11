@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'preact/hooks'
 import Pagination from './Pagination'
 import Modal from './Modal'
-import ImagePreview from './ImagePreview'
 import { message } from '../utils/toast'
 import type { HistoryItem } from '../preact'
 
@@ -22,6 +21,7 @@ const History = () => {
     const pageSize = 5
     const [total, setTotal] = useState<number>(50)
     const [historyList, setHistoryList] = useState<HistoryItem[]>([])
+    const [currentItem, setCurrentItem] = useState<HistoryItem>()
     const [showDelete, setShowDelete] = useState<boolean>(false)
     const [currentId, setCurrentId] = useState<number | null>(null)
     const [showClear, setShowClear] = useState<boolean>(false)
@@ -49,6 +49,10 @@ const History = () => {
         fetchData(page)
     }
 
+    const handleShowItem = (item: HistoryItem) => setCurrentItem(item)
+
+    const handleItemClose = () => setCurrentItem(undefined)
+
     const handleShowDelete = (id: number) => {
         setCurrentId(id)
         setShowDelete(true)
@@ -60,6 +64,7 @@ const History = () => {
             message.error('currentId为空')
             return
         }
+        // dfdfdf
         const result = await (window as any).go.backend.App.DeleteOneHistory(currentId)
         if (result.code === 0) {
             message.success('删除成功')
@@ -104,7 +109,7 @@ const History = () => {
                 {historyList.map((item: HistoryItem) =>
                     <div key={item.id} class="history-card">
                         <div class="card-left">
-                            <ImagePreview filename={item.img} />
+                            <img src={`/images/${item.img}`} onClick={() => handleShowItem(item)} />
                         </div>
                         <div class="card-right">
                             <div class="right-top">
@@ -141,6 +146,9 @@ const History = () => {
             </Modal>
             <Modal open={showClear} title="信息" onClick={handleClearOk} onClose={handleClearClose}>
                 <p>确定要删除全部记录？</p>
+            </Modal>
+            <Modal open={!!currentItem} title={currentItem?.name || ''} onClose={handleItemClose}>
+                <p>{currentItem?.brief || ''}</p>
             </Modal>
         </>
     )

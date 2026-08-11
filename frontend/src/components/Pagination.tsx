@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'preact/hooks'
 import type { PaginationProps } from '../preact' 
 
-
 const Pagination = ({
     total,
     onChange,

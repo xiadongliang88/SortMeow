@@ -18,10 +18,6 @@ export function GetHistory(arg1, arg2) {
   return window['go']['backend']['App']['GetHistory'](arg1, arg2);
 }
 
-export function GetImage(arg1) {
-  return window['go']['backend']['App']['GetImage'](arg1);
-}
-
 export function GormDB() {
   return window['go']['backend']['App']['GormDB']();
 }

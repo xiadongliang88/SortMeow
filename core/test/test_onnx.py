@@ -20,7 +20,7 @@ def test():
     dataset_dir = os.path.join(core_dir, "dataset", mode, "test")
 
     # 【修改3】加载ONNX模型，替代原来的PyTorch模型加载
-    session = ort.InferenceSession(os.path.join(model_dir, "resnet18_epoch_50_bak2.onnx"), providers=providers)
+    session = ort.InferenceSession(os.path.join(model_dir, "resnet_epoch_100.onnx"), providers=providers)
 
     # 获取输入名称（用于后续推理时指定输入）
     input_name = session.get_inputs()[0].name

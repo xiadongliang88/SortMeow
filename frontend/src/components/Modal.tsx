@@ -27,8 +27,8 @@ const Modal = ({ open, title, onClick, onClose, children }: ModalProps) => {
                         </div>
                         {children}
                         <div class="bottom">
-                            <button onClick={handleClose}>取消</button>
-                            <button onClick={handleConfirm}>确定</button>
+                            <button class="close" onClick={handleClose}>取消</button>
+                            {onClick ? <button class="confirm" onClick={handleConfirm}>确定</button> : null}
                         </div>
                     </div>
                     <div class="app-mask" onClick={handleMaskClick}></div>

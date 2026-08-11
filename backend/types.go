@@ -50,6 +50,6 @@ type (
 		Code            string  `json:"code"`
 		Name            string  `json:"name"`
 		Brief           string  `json:"brief"`
-		ConfidenceLevel float32 `json:"confidence_level"`
+		ConfidenceLevel float64 `json:"confidence_level"`
 	}
 )
