@@ -2,7 +2,7 @@ import os
 import torch
 from core.nets.resnet18 import resnet18
 from core.dataloader.dataloader import train_dataloader
-from core.const import epoch, lr, batch_size
+from core.const import epoch, lr, weight_decay, batch_size
 
 
 def train():
@@ -13,7 +13,7 @@ def train():
 
     loss_func = torch.nn.CrossEntropyLoss()
 
-    optimizer = torch.optim.Adam(net.parameters(), lr=lr)
+    optimizer = torch.optim.Adam(net.parameters(), lr=lr, weight_decay=weight_decay)
 
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=20, eta_min=1e-6) # 余弦退火
 

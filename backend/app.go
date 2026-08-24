@@ -44,7 +44,6 @@ func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
 	// 设置 ONNX Runtime DLL 路径
-	// ort.SetSharedLibraryPath("onnxruntime.dll")
 	exeDir, _ := os.Executable()
 	println("exeDir", exeDir)
 	ort.SetSharedLibraryPath(filepath.Join(filepath.Dir(exeDir), "onnxruntime.dll"))
@@ -160,7 +159,6 @@ func (a *App) GormDB() (*gorm.DB, error) {
 }
 
 func (a *App) UploadImage(data []byte, filename string) Response {
-	println("UploadImage")
 	uploadsDir := publicImagePath
 	err := os.MkdirAll(uploadsDir, 0755)
 	if err != nil {

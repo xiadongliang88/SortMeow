@@ -18,10 +18,8 @@ def test():
     model_dir = os.path.join(core_dir, "models")
     dataset_dir = os.path.join(core_dir, "dataset", mode, "test")
 
-    print("model_dir", model_dir)
-
     net = resnet18()
-    net.load_state_dict(torch.load(os.path.join(model_dir, "resnet18_epoch_50_bak2.pth"), weights_only=True))
+    net.load_state_dict(torch.load(os.path.join(model_dir, "resnet18_epoch_50.pth"), weights_only=True))
 
     im_list = glob.glob(os.path.join(dataset_dir, "*", "*.jpg"))
     np.random.shuffle(im_list)
@@ -35,6 +33,8 @@ def test():
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
+    ary = []
+    errors = []
     for im_path in im_list:
         net.eval()
         im_data = Image.open(im_path)
@@ -46,13 +46,25 @@ def test():
         outputs = net.forward(inputs)
 
         _, pred = torch.max(outputs.data, dim=1)
-        print(label_name[pred.cpu().numpy()[0]], " ", im_path)
+        # print(label_name[pred.cpu().numpy()[0]], " ", im_path)
 
-        img = np.asarray(im_data)
-        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-        img = cv2.resize(img, (200, 200))
-        cv2.imshow("img", img)
-        cv2.waitKey(0)
+        # img = np.asarray(im_data)
+        # img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        # img = cv2.resize(img, (200, 200))
+        # cv2.imshow("img", img)
+        # cv2.waitKey(0)
+        result = label_name[pred.cpu().numpy()[0]]
+
+        if result in im_path:
+            ary.append(True)
+        else:
+            ary.append(False)
+            print(f"{label_name[pred.cpu().numpy()[0]]} {im_path}\n")
+            errors.append(f"{label_name[pred.cpu().numpy()[0]]} {im_path}")
+
+    print("ary", ary)
+    # print("errors", errors)
+    print(sum(ary) / len(ary))
 
 
 if __name__ == "__main__":

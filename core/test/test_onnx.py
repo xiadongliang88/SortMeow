@@ -4,13 +4,12 @@ import glob
 import torch
 import numpy as np
 from PIL import Image
-import onnxruntime as ort  # 【修改1】替换torch导入
-from torchvision import transforms  # 保留transforms，仍用于预处理
+import onnxruntime as ort
+from torchvision import transforms
 from core.const import mode, label_name, input_size
 
 
 def test():
-    # 【修改2】选择ONNX Runtime的执行提供程序，自动选择CPU或CUDA
     providers = ['CUDAExecutionProvider', 'CPUExecutionProvider'] if 'CUDAExecutionProvider' in ort.get_available_providers() else ['CPUExecutionProvider']
     print(f"使用设备: {providers[0]}")
 
@@ -19,7 +18,7 @@ def test():
     model_dir = os.path.join(core_dir, "models")
     dataset_dir = os.path.join(core_dir, "dataset", mode, "test")
 
-    # 【修改3】加载ONNX模型，替代原来的PyTorch模型加载
+    # 加载ONNX模型
     session = ort.InferenceSession(os.path.join(model_dir, "resnet_epoch_100.onnx"), providers=providers)
 
     # 获取输入名称（用于后续推理时指定输入）
@@ -28,7 +27,7 @@ def test():
     im_list = glob.glob(os.path.join(dataset_dir, "*", "*.jpg"))
     np.random.shuffle(im_list)
 
-    # 预处理完全不变
+    # 预处理
     test_transform = transforms.Compose([
         transforms.Resize(input_size),
         transforms.CenterCrop(input_size),
@@ -42,15 +41,15 @@ def test():
         inputs = test_transform(im_data)
         inputs = torch.unsqueeze(inputs, dim=0)  # 这里还在用torch，下面会改
 
-        # 【修改4】将输入转为numpy，ONNX Runtime需要numpy输入
+        # 将输入转为numpy，ONNX Runtime需要numpy输入
         inputs = inputs.numpy()
         if providers[0] == 'CPUExecutionProvider':
             inputs = inputs.astype(np.float32)
 
-        # 【修改5】ONNX Runtime推理，输出直接是numpy数组
+        # ONNX Runtime推理，输出直接是numpy数组
         outputs = session.run(None, {input_name: inputs})[0]
 
-        # 【修改6】解析结果，直接用numpy操作
+        # 解析结果，直接用numpy操作
         pred = np.argmax(outputs, axis=1)
         print(label_name[pred[0]], " ", im_path)
 

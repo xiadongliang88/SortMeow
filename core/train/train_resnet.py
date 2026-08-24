@@ -2,7 +2,7 @@ import os
 import torch
 from core.nets.resnet import resnet
 from core.dataloader.dataloader import train_dataloader
-from core.const import epoch, lr, batch_size
+from core.const import epoch, lr, weight_decay, batch_size
 
 
 def train():
@@ -13,9 +13,9 @@ def train():
 
     loss_func = torch.nn.CrossEntropyLoss()
 
-    optimizer = torch.optim.Adam(net.parameters(), lr=lr)
+    optimizer = torch.optim.Adam(net.parameters(), lr=lr, weight_decay=weight_decay)
 
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
     for e in range(epoch):
         print("epoch: ", e)

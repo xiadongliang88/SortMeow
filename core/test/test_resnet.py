@@ -21,7 +21,7 @@ def test():
     print("model_dir", model_dir)
 
     net = resnet()
-    net.load_state_dict(torch.load(os.path.join(model_dir, "resnet_epoch_99.pth"), weights_only=True))
+    net.load_state_dict(torch.load(os.path.join(model_dir, "resnet_epoch_80.pth"), weights_only=True))
 
     print("111")
 
