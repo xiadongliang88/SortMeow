@@ -2,9 +2,11 @@ import { useState, useRef } from 'preact/hooks'
 import type { DetectResult } from '../preact'
 import { message } from '../utils/toast'
 
+
 const Main = () => {
     const fileInputRef = useRef<HTMLInputElement>(null)
     const [fileSrc, setFileSrc] = useState<string>('')
+    const [filename, setFilename] = useState<string>('')
     const [step, setStep] = useState<number>(0)
     const [detectResult, setDetectResult] = useState<DetectResult | null>(null)
 
@@ -46,7 +48,6 @@ const Main = () => {
     }
 
     const handleFileChange = (e: Event) => {
-        console.log('handleFileChange')
         const target = e.target as HTMLInputElement
         const file = target.files?.[0]
         if (file) {
@@ -64,8 +65,8 @@ const Main = () => {
                     file.name
                 )
                 if (result.code === 0) {
-                    console.log("rrr", result)
-                    setFileSrc(result.data)
+                    setFileSrc(result.data.data)
+                    setFilename(result.data.filename)
                     setStep(1)
                 } else if (result.code === 1) {
                     message.error(result.message)
@@ -92,14 +93,16 @@ const Main = () => {
         setStep(2)
 
         setTimeout(async() => {
-            const result = await (window as any).go.backend.App.Detect(fileSrc)
-            if (result.code === 0) {
-                setDetectResult(result.data)
-                setStep(3)
-            } else if (result.code === 1) {
-                message.error(result.message)
+            if (filename) {
+                const result = await (window as any).go.backend.App.Detect(filename)
+                if (result.code === 0) {
+                    setDetectResult(result.data)
+                    setStep(3)
+                } else if (result.code === 1) {
+                    message.error(result.message)
+                }
             }
-        }, 1000)
+        }, 500)
     }
 
     const handleTryOther = () => {
@@ -107,8 +110,6 @@ const Main = () => {
         setDetectResult(null)
         resetUpload()
     }
-
-    console.log("fff", fileSrc)
 
     return (
         <main class="app-main">
@@ -135,7 +136,7 @@ const Main = () => {
                     >
                         {fileSrc.length > 0 && step == 1 ?
                             <div id="previewContent">
-                                <img src={`/images/${fileSrc}`} />
+                                <img src={`data:image/jpeg;base64,${fileSrc}`} />
                                 <button onClick={handleRemovePhoto}>
                                     ❌ 移除照片
                                 </button>
@@ -194,7 +195,7 @@ const Main = () => {
                         <h2>完成！</h2>
                     </div>
                     <div class="result-main">
-                        <img src={`/images/${fileSrc}`} />
+                        <img src={`data:image/jpeg;base64,${fileSrc}`} />
                         <div class="result-word">
                             <div>
                                 <h3>{detectResult?.name}</h3>
@@ -202,7 +203,7 @@ const Main = () => {
                                     <div class="probability-bar">
                                         <div />
                                     </div>
-                                    <span>置信度 {detectResult ? detectResult.confidence_level * 100 + '%' : ''}</span>
+                                    <span>置信度 {detectResult ? (detectResult.confidence_level * 100).toFixed(2) + '%' : ''}</span>
                                 </div>
                             </div>
                             <p>{detectResult?.brief}</p>

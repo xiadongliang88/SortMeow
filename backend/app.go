@@ -3,6 +3,7 @@ package backend
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"fmt"
 	"math"
 	"os"
@@ -17,23 +18,12 @@ import (
 )
 
 var (
-	publicImagePath = "./frontend/public/images"
-	modelPath       = "resnet_epoch_100.onnx"
+	staticImagesPath = "./static/images"
+	modelPath        = "resnet18_epoch_50.onnx"
 
 	// ImageNet 标准化参数
 	mean = []float32{0.485, 0.456, 0.406}
 	std  = []float32{0.229, 0.224, 0.225}
-
-	// 猫品种标签
-	labelName = []string{
-		"american_shorthair",
-		"bengal",
-		"british_shorthair",
-		"exotic_shorthair",
-		"maine_coon",
-		"ragdoll",
-		"sphynx",
-	}
 )
 
 func NewApp() *App {
@@ -90,16 +80,14 @@ func preprocessImage(imgData []byte) ([]float32, error) {
 	return input, nil
 }
 
-func runInference(input []float32) (string, float64, error) {
-	// 创建输入张量 [1, 3, 224, 224]
+func runInference(input []float32, labels []string) (string, float64, error) {
 	inputTensor, err := ort.NewTensor(ort.Shape{1, 3, 224, 224}, input)
 	if err != nil {
 		return "", 0, fmt.Errorf("create input tensor: %w", err)
 	}
 	defer inputTensor.Destroy()
 
-	// 创建输出张量 [1, 7]
-	outputTensor, err := ort.NewTensor(ort.Shape{1, 7}, make([]float32, 7))
+	outputTensor, err := ort.NewTensor(ort.Shape{1, 12}, make([]float32, 12))
 	if err != nil {
 		return "", 0, fmt.Errorf("create output tensor: %w", err)
 	}
@@ -147,7 +135,7 @@ func runInference(input []float32) (string, float64, error) {
 	}
 	confidence := math.Exp(float64(maxVal)) / sum
 
-	return labelName[maxIdx], confidence, nil
+	return labels[maxIdx], confidence, nil
 }
 
 func (a *App) GormDB() (*gorm.DB, error) {
@@ -159,7 +147,7 @@ func (a *App) GormDB() (*gorm.DB, error) {
 }
 
 func (a *App) UploadImage(data []byte, filename string) Response {
-	uploadsDir := publicImagePath
+	uploadsDir := staticImagesPath
 	err := os.MkdirAll(uploadsDir, 0755)
 	if err != nil {
 		return Response{Code: 1, Message: "failed", Data: err.Error()}
@@ -174,32 +162,12 @@ func (a *App) UploadImage(data []byte, filename string) Response {
 		return Response{Code: 1, Message: "failed", Data: err.Error()}
 	}
 
-	println("333")
-
-	return Response{Code: 0, Message: "success", Data: newFilename}
-}
-
-func (a *App) GetHistory(page int, pageSize int) Response {
-	db, err := a.GormDB()
-	if err != nil {
-		return Response{Code: 1, Message: err.Error()}
+	imageResult := map[string]any{
+		"filename": newFilename,
+		"data":     base64.StdEncoding.EncodeToString(data),
 	}
 
-	var total int64
-	db.Table("history_test").Count(&total)
-
-	var historyList []HistoryWithBreed
-	err = db.Table("history_test").Select("history_test.*, breeds_test.brief, breeds_test.name").
-		Joins("LEFT JOIN breeds_test ON history_test.breed = breeds_test.id").
-		Order("history_test.id DESC").Limit(pageSize).Offset((page - 1) * pageSize).Find(&historyList).Error
-
-	if err != nil {
-		return Response{Code: 1, Message: err.Error()}
-	}
-
-	historyData := HistoryData{Page: page, PageSize: pageSize, Total: total, List: historyList}
-
-	return Response{Code: 0, Message: "success", Data: historyData}
+	return Response{Code: 0, Message: "success", Data: imageResult}
 }
 
 func (a *App) Detect(filename string) Response {
@@ -208,7 +176,7 @@ func (a *App) Detect(filename string) Response {
 		return Response{Code: 1, Message: err.Error()}
 	}
 
-	filePath := filepath.Join(publicImagePath, filename)
+	filePath := filepath.Join(staticImagesPath, filename)
 	imgData, err := os.ReadFile(filePath)
 	if err != nil {
 		return Response{Code: 1, Message: "failed to read image: " + err.Error()}
@@ -219,22 +187,31 @@ func (a *App) Detect(filename string) Response {
 		return Response{Code: 1, Message: "failed to preprocess: " + err.Error()}
 	}
 
+	// 查询breeds表的Code列，组成切片
+	var labels []string
+	err = db.Table("breeds").Pluck("code", &labels).Error
+	if err != nil {
+		return Response{Code: 1, Message: "failed to query breed codes: " + err.Error()}
+	}
+
 	// 推理
-	detectRet, confidence, err := runInference(input)
+	detectRet, confidence, err := runInference(input, labels)
 	if err != nil {
 		return Response{Code: 1, Message: "model inference failed: " + err.Error()}
 	}
+	confidence = math.Round(confidence*10000) / 10000
 
 	var breed Breed
-	err = db.Table("breeds_test").Where("code = ?", detectRet).First(&breed).Error
+	err = db.Table("breeds").Where("code = ?", detectRet).First(&breed).Error
 	if err != nil {
 		return Response{Code: 1, Message: err.Error()}
 	}
 
 	now := int(time.Now().Unix())
+	print("confidence", confidence)
 
-	one := HistoryItem{Img: filename, Breed: int(breed.Id), Date: now}
-	result := db.Table("history_test").Create(&one)
+	one := HistoryItem{Img: filename, Breed: int(breed.Id), Confidence: confidence, Date: now}
+	result := db.Table("history").Create(&one)
 	if result.Error != nil {
 		return Response{Code: 1, Message: result.Error.Error()}
 	}
@@ -250,13 +227,43 @@ func (a *App) Detect(filename string) Response {
 	return Response{Code: 0, Message: "success", Data: detectData}
 }
 
+func (a *App) GetHistory(page int, pageSize int) Response {
+	db, err := a.GormDB()
+	if err != nil {
+		return Response{Code: 1, Message: err.Error()}
+	}
+
+	var total int64
+	db.Table("history").Count(&total)
+
+	var historyList []HistoryWithBreed
+	err = db.Table("history").Select("history.*, breeds.brief, breeds.name").
+		Joins("LEFT JOIN breeds ON history.breed = breeds.id").
+		Order("history.id DESC").Limit(pageSize).Offset((page - 1) * pageSize).Find(&historyList).Error
+
+	if err != nil {
+		return Response{Code: 1, Message: err.Error()}
+	}
+
+	for i := range historyList {
+		imgPath := filepath.Join(staticImagesPath, historyList[i].Img)
+		if data, err := os.ReadFile(imgPath); err == nil {
+			historyList[i].ImgData = base64.StdEncoding.EncodeToString(data)
+		}
+	}
+
+	historyData := HistoryData{Page: page, PageSize: pageSize, Total: total, List: historyList}
+
+	return Response{Code: 0, Message: "success", Data: historyData}
+}
+
 func (a *App) DeleteOneHistory(id uint) Response {
 	db, err := a.GormDB()
 	if err != nil {
 		return Response{Code: 1, Message: err.Error()}
 	}
 
-	result := db.Table("history_test").Delete(&HistoryItem{}, id)
+	result := db.Table("history").Delete(&HistoryItem{}, id)
 	if result.Error != nil {
 		return Response{Code: 1, Message: result.Error.Error()}
 	}
@@ -270,15 +277,15 @@ func (a *App) ClearHistory() Response {
 		return Response{Code: 1, Message: err.Error()}
 	}
 
-	result := db.Exec("DELETE FROM history_test")
+	result := db.Exec("DELETE FROM history")
 	if result.Error != nil {
 		return Response{Code: 1, Message: result.Error.Error()}
 	}
 
-	if err := os.RemoveAll(publicImagePath); err != nil {
+	if err := os.RemoveAll(staticImagesPath); err != nil {
 		return Response{Code: 1, Message: fmt.Sprintf("failed to remove images: %v", err)}
 	}
-	if err := os.MkdirAll(publicImagePath, 0755); err != nil {
+	if err := os.MkdirAll(staticImagesPath, 0755); err != nil {
 		return Response{Code: 1, Message: fmt.Sprintf("failed to recreate images dir: %v", err)}
 	}
 

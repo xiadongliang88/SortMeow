@@ -4,6 +4,7 @@ import Modal from './Modal'
 import { message } from '../utils/toast'
 import type { HistoryItem } from '../preact'
 
+
 const formatDate = (timestamp: number) => {
     const date = new Date(timestamp * 1000)
     return date.toLocaleString('zh-CN', {
@@ -64,7 +65,6 @@ const History = () => {
             message.error('currentId为空')
             return
         }
-        // dfdfdf
         const result = await (window as any).go.backend.App.DeleteOneHistory(currentId)
         if (result.code === 0) {
             message.success('删除成功')
@@ -109,7 +109,7 @@ const History = () => {
                 {historyList.map((item: HistoryItem) =>
                     <div key={item.id} class="history-card">
                         <div class="card-left">
-                            <img src={`/images/${item.img}`} onClick={() => handleShowItem(item)} />
+                            <img src={`data:image/jpeg;base64,${item.img_data}`} onClick={() => handleShowItem(item)} />
                         </div>
                         <div class="card-right">
                             <div class="right-top">

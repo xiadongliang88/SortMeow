@@ -1,9 +1,8 @@
 import type { ModalProps } from '../preact'
 
+
 const Modal = ({ open, title, onClick, onClose, children }: ModalProps) => {
-    const handleClose = () => {
-        onClose?.()
-    }
+    const handleClose = () => onClose?.()
 
     const handleConfirm = () => {
         onClick?.()
@@ -11,9 +10,7 @@ const Modal = ({ open, title, onClick, onClose, children }: ModalProps) => {
     }
 
     const handleMaskClick = (e: MouseEvent) => {
-        if (e.target === e.currentTarget) {
-            handleClose()
-        }
+        if (e.target === e.currentTarget) handleClose()
     }
 
     return (

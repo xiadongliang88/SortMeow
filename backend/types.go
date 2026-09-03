@@ -16,19 +16,21 @@ type (
 	}
 
 	HistoryItem struct {
-		Id    uint   `gorm:"primaryKey"`
-		Img   string `gorm:"column:img"`
-		Breed int    `gorm:"column:breed"`
-		Date  int    `gorm:"column:date"`
+		Id         uint    `gorm:"primaryKey"`
+		Img        string  `gorm:"column:img"`
+		Breed      int     `gorm:"column:breed"`
+		Confidence float64 `gorm:"column:confidence"`
+		Date       int     `gorm:"column:date"`
 	}
 
 	HistoryWithBreed struct {
-		Id    uint   `gorm:"column:id"         json:"id"`
-		Img   string `gorm:"column:img"        json:"img"`
-		Breed int    `gorm:"column:breed"      json:"breed"`
-		Date  int    `gorm:"column:date"       json:"date"`
-		Name  string `gorm:"column:name"       json:"name"`
-		Brief string `gorm:"column:brief"      json:"brief"`
+		Id      uint   `gorm:"column:id"         json:"id"`
+		Img     string `gorm:"column:img"        json:"img"`
+		ImgData string `gorm:"-"                 json:"img_data"`
+		Breed   int    `gorm:"column:breed"      json:"breed"`
+		Date    int    `gorm:"column:date"       json:"date"`
+		Name    string `gorm:"column:name"       json:"name"`
+		Brief   string `gorm:"column:brief"     json:"brief"`
 	}
 
 	HistoryData struct {

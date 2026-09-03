@@ -23,6 +23,7 @@ env/
 
 uploads/*
 
+core/dataset/*.zip
 core/dataset/toy/*
 core/dataset/benchmark/*
 core/models/*.pth
@@ -33,3 +34,5 @@ build/bin
 frontend/node_modules
 frontend/dist
 frontend/public
+
+static/images/*

@@ -23,9 +23,7 @@ export const message: MessageAPI = {
         div.appendChild(subDiv)
         document.body.appendChild(div)
 
-        setTimeout(() => {
-            div.remove()
-        }, 3000)
+        setTimeout(() => div.remove(), 3000)
     },
     error: (text: string) => {
         const div = document.createElement('div')
@@ -46,8 +44,6 @@ export const message: MessageAPI = {
         div.appendChild(subDiv)
         document.body.appendChild(div)
 
-        setTimeout(() => {
-            div.remove()
-        }, 3000)
+        setTimeout(() => div.remove(), 3000)
     }
 }

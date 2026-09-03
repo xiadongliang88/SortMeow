@@ -1,6 +1,7 @@
 export interface HistoryItem {
     id: number
     img: string
+    img_data: string
     breed: number
     date: number
     name: string
