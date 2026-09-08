@@ -22,6 +22,10 @@ export function GormDB() {
   return window['go']['backend']['App']['GormDB']();
 }
 
+export function Shutdown() {
+  return window['go']['backend']['App']['Shutdown']();
+}
+
 export function UploadImage(arg1, arg2) {
   return window['go']['backend']['App']['UploadImage'](arg1, arg2);
 }

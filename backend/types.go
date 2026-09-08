@@ -2,11 +2,17 @@ package backend
 
 import (
 	"context"
+
+	ort "github.com/yalue/onnxruntime_go"
+	"gorm.io/gorm"
 )
 
 type (
 	App struct {
-		ctx context.Context
+		ctx      context.Context
+		db       *gorm.DB
+		session  *ort.AdvancedSession
+		labels   []string
 	}
 
 	Response struct {

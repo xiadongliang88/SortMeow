@@ -13,4 +13,6 @@ export function GetHistory(arg1:number,arg2:number):Promise<backend.Response>;
 
 export function GormDB():Promise<gorm.DB>;
 
+export function Shutdown():Promise<void>;
+
 export function UploadImage(arg1:Array<number>,arg2:string):Promise<backend.Response>;
