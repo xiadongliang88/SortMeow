@@ -22,7 +22,7 @@ torch.onnx.export(
     dummy_input,
     os.path.join(model_dir, "resnet18_epoch_50.onnx"),
     export_params=True,
-    opset_version=11,
+    opset_version=18,
     input_names=["input"],
     output_names=["output"],
     dynamic_axes={"input": {0: "batch_size"}, "output": {0: "batch_size"}}
