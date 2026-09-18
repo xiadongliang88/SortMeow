@@ -180,7 +180,10 @@ func (a *App) runInference(input []float32) (string, float64, error) {
 	}
 	defer session.Destroy()
 
+	start := time.Now()
 	err = session.Run()
+	elapsed := time.Since(start)
+	println("Inference time:", elapsed.String())
 	if err != nil {
 		return "", 0, fmt.Errorf("run inference: %w", err)
 	}

@@ -34,7 +34,7 @@ def test():
     ])
 
     ary = []
-    errors = []
+    # errors = []
     for im_path in im_list:
         net.eval()
         im_data = Image.open(im_path)
@@ -46,7 +46,7 @@ def test():
         outputs = net.forward(inputs)
 
         _, pred = torch.max(outputs.data, dim=1)
-        # print(label_name[pred.cpu().numpy()[0]], " ", im_path)
+        print(label_name[pred.cpu().numpy()[0]], " ", im_path)
 
         # img = np.asarray(im_data)
         # img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
@@ -59,8 +59,8 @@ def test():
             ary.append(True)
         else:
             ary.append(False)
-            print(f"{label_name[pred.cpu().numpy()[0]]} {im_path}\n")
-            errors.append(f"{label_name[pred.cpu().numpy()[0]]} {im_path}")
+            # print(f"{label_name[pred.cpu().numpy()[0]]} {im_path}\n")
+            # errors.append(f"{label_name[pred.cpu().numpy()[0]]} {im_path}")
 
     print("ary", ary)
     # print("errors", errors)

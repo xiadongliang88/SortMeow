@@ -25,10 +25,13 @@ uploads/*
 
 core/dataset/*.zip
 core/dataset/toy/*
+core/dataset/toy_bak/*
 core/dataset/benchmark/*
+core/dataset/benchmark_bak/*
 core/models/*.pth
 core/models/*.pt
 core/models/*.onnx
+core/models/*.onnx.data
 
 build/bin
 frontend/node_modules
