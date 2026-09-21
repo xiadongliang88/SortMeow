@@ -46,7 +46,8 @@ func (a *App) Startup(ctx context.Context) {
 	}
 
 	// 初始化数据库连接（复用）
-	a.db, err = gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
+	dbPath := filepath.Join(filepath.Dir(exeDir), "app.db")
+	a.db, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
 	if err != nil {
 		panic("Failed to open database: " + err.Error())
 	}
