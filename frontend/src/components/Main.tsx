@@ -9,6 +9,7 @@ const Main = () => {
     const [filename, setFilename] = useState<string>('')
     const [step, setStep] = useState<number>(0)
     const [detectResult, setDetectResult] = useState<DetectResult | null>(null)
+    const [isDragging, setIsDragging] = useState<boolean>(false)
 
     const handleUploadClick = () => fileInputRef.current?.click()
 
@@ -83,6 +84,35 @@ const Main = () => {
         setFileSrc('')
     }
 
+    const handleDragOver = (e: DragEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsDragging(true)
+    }
+
+    const handleDragLeave = (e: DragEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsDragging(false)
+    }
+
+    const handleDrop = (e: DragEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsDragging(false)
+
+        const files = e.dataTransfer?.files
+        if (files && files.length > 0) {
+            const file = files[0]
+            if (file.type.startsWith('image/')) {
+                const fakeEvent = {
+                    target: { files: [file] }
+                } as unknown as Event
+                handleFileChange(fakeEvent)
+            }
+        }
+    }
+
     const handleRemovePhoto = (e: Event) => {
         e.stopPropagation()
         setStep(0)
@@ -129,10 +159,13 @@ const Main = () => {
                     </i>
                 </div>
                 <div class={`upload${!(step == 0 || step == 1 || step == 2) ? ' hidden' : ''}`}>
-                    <div 
-                        class="upload-zone" 
-                        style={{borderStyle: step != 2 ? 'dashed' : 'solid'}} 
+                    <div
+                        class={`upload-zone${isDragging ? ' dragging' : ''}`}
+                        style={{borderStyle: step != 2 ? 'dashed' : 'solid'}}
                         onClick={handleUploadClick}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
                     >
                         {fileSrc.length > 0 && step == 1 ?
                             <div id="previewContent">
@@ -201,7 +234,7 @@ const Main = () => {
                                 <h3>{detectResult?.name}</h3>
                                 <div>
                                     <div class="probability-bar">
-                                        <div />
+                                        <div style={{width: `${(detectResult?.confidence_level ?? 0) * 100}%`}} />
                                     </div>
                                     <span>置信度 {detectResult ? (detectResult.confidence_level * 100).toFixed(2) + '%' : ''}</span>
                                 </div>

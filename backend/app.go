@@ -36,7 +36,6 @@ func (a *App) Startup(ctx context.Context) {
 
 	// 设置 ONNX Runtime DLL 路径
 	exeDir, _ := os.Executable()
-	println("exeDir", exeDir)
 	ort.SetSharedLibraryPath(filepath.Join(filepath.Dir(exeDir), "onnxruntime.dll"))
 
 	// 初始化 ONNX Runtime 环境
@@ -285,7 +284,6 @@ func (a *App) Detect(filename string) Response {
 	}
 
 	now := int(time.Now().Unix())
-	print("confidence", confidence)
 
 	one := HistoryItem{Img: filename, Breed: int(breed.Id), Confidence: confidence, Date: now}
 	result := db.Table("history").Create(&one)

@@ -202,6 +202,11 @@ a
                 border-color: #bdc3cb
                 text-align: center
                 cursor: pointer
+                transition: border-color 0.2s, background-color 0.2s
+
+                &.dragging
+                    border-color: var(--primary)
+                    background-color: rgba(var(--primary-rgb), 0.05)
 
                 #uploadContent 
                     > svg
