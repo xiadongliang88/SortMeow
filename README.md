@@ -2,6 +2,8 @@
 
 A deep learning-based cat breed recognition desktop application built with Wails framework, supporting image upload, breed prediction, and history management.
 
+[切换至中文](./README.zh-CN.md)
+
 ![Wails](https://img.shields.io/badge/Wails-Desktop%20App-blue)
 ![Preact](https://img.shields.io/badge/Preact-Frontend%20TS-green)
 ![Go](https://img.shields.io/badge/Go-Backend-blue)
@@ -43,23 +45,37 @@ A deep learning-based cat breed recognition desktop application built with Wails
 ```
 dissertation/
 ├── backend/                   # Go backend
-│   ├── app.go                 # Core business logic
-│   └── types.go               # Data structure definitions
+│   ├── app.go                 # Core business logic (API, inference, database)
+│   ├── types.go               # Data structure definitions
+│   └── dbinit/                # Data file initialization (tables, breed data, image dir)
+├── cmd/initdb/                # Post-build hook: prepares app.db and image dir
 ├── core/                      # Python ML module
 │   ├── nets/                  # Neural network definitions
 │   │   ├── resnet.py          # ResNet base class
 │   │   └── resnet18.py        # ResNet18 model
 │   ├── dataloader/            # Data loading
+│   ├── dataset/               # Datasets
+│   ├── models/                # Training weights and exported ONNX models
 │   ├── train/                 # Training scripts
-│   │   ├── train_resnet18.py  # Model training
+│   │   ├── train_resnet18.py  # ResNet18 training
+│   │   ├── train_resnet.py    # ResNet training
 │   │   └── to_onnx.py         # PyTorch → ONNX conversion
+│   ├── validate/              # Validation scripts
+│   ├── test/                  # Test scripts
 │   └── const/                 # Hyperparameter configuration
 ├── frontend/                  # Preact + TypeScript frontend
 │   └── src/
-│       └── components/        # React-style components
-│           ├── Main.tsx       # Main page (upload/recognition)
-│           └── History.tsx    # History page
+│       ├── components/        # Components
+│       │   ├── Main.tsx       # Main page (upload/recognition)
+│       │   ├── History.tsx    # History page
+│       │   ├── Modal.tsx      # Modal dialog
+│       │   ├── Navbar.tsx     # Navigation bar
+│       │   └── Pagination.tsx # Pagination component
+│       ├── pages/app.tsx      # Router entry
+│       ├── styles/            # SASS styles
+│       └── utils/toast.ts     # Toast notifications
 ├── static/images/             # Uploaded image storage directory
+├── build/bin/                 # Build output (exe, onnxruntime.dll, model)
 └── app.db                     # SQLite database
 ```
 
@@ -129,6 +145,42 @@ The trained model file `resnet18_epoch_50.onnx` should be placed in the `build/b
 |-------|-------------|
 | `breeds` | Cat breed table (code, name, brief description) |
 | `history` | Recognition history (image, breed, confidence, timestamp) |
+
+### Data Location
+
+The backend resolves a single "app data directory" at startup; `app.db` and `static/images` always live in the same place:
+
+- **Development** (`wails dev`, working directory = project root) → data lives in the project root (`app.db`, `static/images/`)
+- **Packaged app** (working directory is not the project root) → data lives next to the executable, so the whole bin folder is portable
+
+### Automatic Data Preparation on Build
+
+`wails build` runs `cmd/initdb` through the `postBuildHooks` hook in `wails.json`, preparing everything the app needs in the bin directory:
+
+```
+build/bin/
+├── dissertation.exe        # application binary
+├── app.db                  # SQLite database (breeds / history tables + breed seed data)
+├── static/images/          # uploaded image directory
+├── resnet18_epoch_50.onnx # ONNX model
+└── onnxruntime.dll         # ONNX Runtime shared library
+```
+
+| File | Purpose |
+|------|---------|
+| `backend/dbinit/dbinit.go` | Creates the tables, seeds the breed data and the image directory (also called on backend startup as a safety net) |
+| `cmd/initdb/main.go` | CLI entry point, triggered by the `postBuildHooks` hook of `wails build` |
+
+Run it manually:
+
+```bash
+go run ./cmd/initdb -out build/bin
+```
+
+Flags:
+
+- `-out` —— output directory (default `<project root>/build/bin`)
+- `-copy-runtime` —— also copy the ONNX model and `onnxruntime.dll` (enabled by default, skipped when they already exist)
 
 ## UI Preview
 

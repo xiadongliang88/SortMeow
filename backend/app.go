@@ -16,9 +16,12 @@ import (
 	ort "github.com/yalue/onnxruntime_go"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+
+	"sortmeow/backend/dbinit"
 )
 
 var (
+	// staticImagesPath 在 Startup 中根据 appDir 动态确定（不能是编译期常量）
 	staticImagesPath = "./static/images"
 	modelPath        = "resnet18_epoch_50.onnx"
 
@@ -29,6 +32,20 @@ var (
 
 func NewApp() *App {
 	return &App{}
+}
+
+func resolveAppDir() string {
+	// 返回「项目根目录」
+	if cwd, err := os.Getwd(); err == nil {
+		if _, err := os.Stat(filepath.Join(cwd, "wails.json")); err == nil {
+			return cwd
+		}
+	}
+	// 返回「可执行文件所在目录」
+	if exeDir, err := os.Executable(); err == nil {
+		return filepath.Dir(exeDir)
+	}
+	return "."
 }
 
 func (a *App) Startup(ctx context.Context) {
@@ -44,8 +61,17 @@ func (a *App) Startup(ctx context.Context) {
 		panic("Failed to initialize ONNX runtime: " + err.Error())
 	}
 
+	// 数据目录：数据库与上传图片必须放在同一个目录下
+	appDir := resolveAppDir()
+	staticImagesPath = dbinit.ImagesDir(appDir)
+
+	// 确保数据库（含表结构与品种数据）与图片目录存在
+	if err := dbinit.Init(appDir); err != nil {
+		panic("Failed to init app data: " + err.Error())
+	}
+
 	// 初始化数据库连接（复用）
-	dbPath := filepath.Join(filepath.Dir(exeDir), "app.db")
+	dbPath := dbinit.DBPath(appDir)
 	a.db, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
 	if err != nil {
 		panic("Failed to open database: " + err.Error())
@@ -353,16 +379,31 @@ func (a *App) DeleteOneHistory(id uint) Response {
 func (a *App) ClearHistory() Response {
 	db := a.GormDB()
 
-	result := db.Exec("DELETE FROM history")
-	if result.Error != nil {
-		return Response{Code: 1, Message: result.Error.Error()}
+	// 删除历史记录并重置自增序列
+	err := db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Exec("DELETE FROM history").Error; err != nil {
+			return err
+		}
+		// sqlite_sequence 不存在时忽略该错误
+		tx.Exec("DELETE FROM sqlite_sequence WHERE name = 'history'")
+		return nil
+	})
+	if err != nil {
+		return Response{Code: 1, Message: err.Error()}
 	}
 
-	if err := os.RemoveAll(staticImagesPath); err != nil {
-		return Response{Code: 1, Message: fmt.Sprintf("failed to remove images: %v", err)}
-	}
+	// 清理图片目录中的文件（保留目录本身）
 	if err := os.MkdirAll(staticImagesPath, 0755); err != nil {
 		return Response{Code: 1, Message: fmt.Sprintf("failed to recreate images dir: %v", err)}
+	}
+	entries, err := os.ReadDir(staticImagesPath)
+	if err != nil {
+		return Response{Code: 1, Message: fmt.Sprintf("failed to read images dir: %v", err)}
+	}
+	for _, entry := range entries {
+		if err := os.RemoveAll(filepath.Join(staticImagesPath, entry.Name())); err != nil {
+			return Response{Code: 1, Message: fmt.Sprintf("failed to remove image %s: %v", entry.Name(), err)}
+		}
 	}
 
 	return Response{Code: 0, Message: "success"}
