@@ -46,39 +46,13 @@
 
 ```
 dissertation/
-├── backend/                   # Go 后端
-│   ├── app.go                 # 核心业务逻辑（接口、推理、数据库）
-│   ├── types.go               # 数据结构定义
-│   └── dbinit/                # 数据文件初始化（建表、品种数据、图片目录）
-├── cmd/initdb/                # 构建后置钩子：准备 app.db 与图片目录
-├── core/                      # Python 机器学习模块
-│   ├── nets/                  # 网络结构定义
-│   │   ├── resnet.py          # ResNet 基类
-│   │   └── resnet18.py        # ResNet18 模型
-│   ├── dataloader/            # 数据加载
-│   ├── dataset/               # 数据集
-│   ├── models/                # 训练权重与导出的 ONNX 模型
-│   ├── train/                 # 训练脚本
-│   │   ├── train_resnet18.py  # 模型训练
-│   │   ├── train_resnet.py    # ResNet 训练
-│   │   └── to_onnx.py         # PyTorch → ONNX 转换
-│   ├── validate/              # 验证脚本
-│   ├── test/                  # 测试脚本
-│   └── const/                 # 超参数配置
-├── frontend/                  # Preact + TypeScript 前端
-│   └── src/
-│       ├── components/        # 组件
-│       │   ├── Main.tsx       # 主页面（上传 / 识别）
-│       │   ├── History.tsx    # 历史记录页
-│       │   ├── Modal.tsx      # 弹窗
-│       │   ├── Navbar.tsx     # 导航栏
-│       │   └── Pagination.tsx # 分页组件
-│       ├── pages/app.tsx      # 路由入口
-│       ├── styles/            # SASS 样式
-│       └── utils/toast.ts     # 轻提示
-├── static/images/             # 上传图片存放目录
-├── build/bin/                 # 构建产物（exe、onnxruntime.dll、模型）
-└── app.db                     # SQLite 数据库
+├── backend/      # Go 后端：接口、ONNX 推理、数据库
+├── cmd/initdb/   # 构建钩子：准备 app.db 与图片目录
+├── core/         # Python 机器学习模块：模型定义、训练、ONNX 导出
+├── frontend/     # Preact + TypeScript 前端
+├── static/images/# 上传图片存放目录
+├── build/bin/    # 构建产物（exe、onnxruntime.dll、模型）
+└── app.db        # SQLite 数据库
 ```
 
 ## 快速开始

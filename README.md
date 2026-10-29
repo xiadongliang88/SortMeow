@@ -44,39 +44,13 @@ A deep learning-based cat breed recognition desktop application built with Wails
 
 ```
 dissertation/
-├── backend/                   # Go backend
-│   ├── app.go                 # Core business logic (API, inference, database)
-│   ├── types.go               # Data structure definitions
-│   └── dbinit/                # Data file initialization (tables, breed data, image dir)
-├── cmd/initdb/                # Post-build hook: prepares app.db and image dir
-├── core/                      # Python ML module
-│   ├── nets/                  # Neural network definitions
-│   │   ├── resnet.py          # ResNet base class
-│   │   └── resnet18.py        # ResNet18 model
-│   ├── dataloader/            # Data loading
-│   ├── dataset/               # Datasets
-│   ├── models/                # Training weights and exported ONNX models
-│   ├── train/                 # Training scripts
-│   │   ├── train_resnet18.py  # ResNet18 training
-│   │   ├── train_resnet.py    # ResNet training
-│   │   └── to_onnx.py         # PyTorch → ONNX conversion
-│   ├── validate/              # Validation scripts
-│   ├── test/                  # Test scripts
-│   └── const/                 # Hyperparameter configuration
-├── frontend/                  # Preact + TypeScript frontend
-│   └── src/
-│       ├── components/        # Components
-│       │   ├── Main.tsx       # Main page (upload/recognition)
-│       │   ├── History.tsx    # History page
-│       │   ├── Modal.tsx      # Modal dialog
-│       │   ├── Navbar.tsx     # Navigation bar
-│       │   └── Pagination.tsx # Pagination component
-│       ├── pages/app.tsx      # Router entry
-│       ├── styles/            # SASS styles
-│       └── utils/toast.ts     # Toast notifications
-├── static/images/             # Uploaded image storage directory
-├── build/bin/                 # Build output (exe, onnxruntime.dll, model)
-└── app.db                     # SQLite database
+├── backend/      # Go backend: API, ONNX inference, database
+├── cmd/initdb/   # Build hook: prepares app.db and image directory
+├── core/         # Python ML module: model definition, training, ONNX export
+├── frontend/     # Preact + TypeScript frontend
+├── static/images/# Uploaded image storage
+├── build/bin/    # Build output (exe, onnxruntime.dll, model)
+└── app.db        # SQLite database
 ```
 
 ## Quick Start
